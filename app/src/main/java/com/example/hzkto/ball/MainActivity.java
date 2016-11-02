@@ -8,13 +8,14 @@ import android.view.SurfaceView;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
-        SurfaceView sfvTrack = (SurfaceView)findViewById(R.id.surfaceView);
+        SurfaceView sfvTrack = (SurfaceView) findViewById(R.id.surfaceView);
         sfvTrack.setZOrderOnTop(true);
         SurfaceHolder sfhTrackHolder = sfvTrack.getHolder();
         sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);

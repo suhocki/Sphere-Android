@@ -4,6 +4,9 @@ package com.example.hzkto.ball.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.hzkto.ball.Constants.onX;
+import static com.example.hzkto.ball.Constants.onY;
+import static com.example.hzkto.ball.Constants.onZ;
 import static com.example.hzkto.ball.system.DrawThread.CENTER;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -14,9 +17,7 @@ import static java.lang.Math.sin;
  */
 
 public class Circle3D {
-    public static final int onX = 0;
-    public static final int onY = 1;
-    public static final int onZ = 2;
+
 
     List<Point3D> points;
 
@@ -29,8 +30,12 @@ public class Circle3D {
             alpha += step;
         } while (alpha < 2 * Math.PI);
         points.add(new Point3D((float) (CENTER.x + radius * Math.cos(0)), (float) (CENTER.y - radius * Math.sin(0)), 0));
+        rotate(angle, rotation);
 
-        switch (rotation) {
+    }
+
+    public void rotate(float angle, int type) {
+        switch (type) {
             case onX:
                 for (Point3D point3D : points) {
                     point3D.y -= CENTER.y;
