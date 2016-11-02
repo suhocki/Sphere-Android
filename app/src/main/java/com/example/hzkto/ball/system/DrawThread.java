@@ -11,6 +11,7 @@ import com.example.hzkto.ball.tools.Ball;
 import com.example.hzkto.ball.tools.Point3D;
 
 import static com.example.hzkto.ball.Constants.LINE_WIDTH;
+import static com.example.hzkto.ball.Constants.POLYGONS;
 import static com.example.hzkto.ball.Constants.RADIUS;
 
 /**
@@ -34,7 +35,7 @@ public class DrawThread extends Thread {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(LINE_WIDTH);
         angle = (float) Math.toRadians(0);
-        ball = new Ball(RADIUS, angle);
+//        ball = new Ball(MainActivity.RADIUS, MainActivity.POLYGONS);
     }
 
     public void setRunning(boolean run) {
@@ -55,11 +56,11 @@ public class DrawThread extends Thread {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
-                        angle += (float) Math.toRadians(0.1);
-                        ball.rotate(angle);
+                        angle += (float) Math.toRadians(5);
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                        canvas.drawPath(ball.getPath(), paint);
-//                        canvas.drawPath(ball.getPath(), paint);
+//                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPath(), paint);
+//                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPath(), paint);
+                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPathVisible(), paint);
                     }
                 }
             } finally {

@@ -20,9 +20,11 @@ public class Circle3D {
 
 
     List<Point3D> points;
+    List<Point3D> visiblePoints;
 
     public Circle3D(float radius, int polygons, float angle, int rotation) {
         points = new ArrayList<>();
+        visiblePoints = new ArrayList<>();
         float step = (float) (2 * Math.PI / polygons);
         float alpha = 0;
         do {
@@ -37,32 +39,37 @@ public class Circle3D {
     public void rotate(float angle, int type) {
         switch (type) {
             case onX:
-                for (Point3D point3D : points) {
-                    point3D.y -= CENTER.y;
-                    point3D.y = (float) (point3D.y * cos(angle) + point3D.z * sin(angle));
-                    point3D.z = (float) (-point3D.y * sin(angle) + point3D.z * cos(angle));
-                    point3D.y += CENTER.y;
+                for (Point3D point : points) {
+                    point.y -= CENTER.y;
+                    point.y = (float) (point.z * sin(angle) + point.y * cos(angle));
+                    point.z = (float) (point.z * cos(angle)+ -point.y * sin(angle) );
+                    point.y += CENTER.y;
                 }
                 break;
             case onY:
-                for (Point3D point3D : points) {
-                    point3D.x -= CENTER.x;
-                    point3D.x = (float) (point3D.x * cos(angle) + point3D.z * sin(angle));
-                    point3D.z = (float) (-point3D.x * sin(angle) + point3D.z * cos(angle));
-                    point3D.x += CENTER.x;
+                for (Point3D point : points) {
+                    point.x -= CENTER.x;
+                    point.x = (float) (point.x * cos(angle) + point.z * sin(angle));
+                    point.z = (float) (-point.x * sin(angle) + point.z * cos(angle));
+                    point.x += CENTER.x;
                 }
                 break;
             case onZ:
-                for (Point3D point3D : points) {
-                    point3D.y -= CENTER.y;
-                    point3D.x -= CENTER.x;
-                    float x = point3D.x;
-                    point3D.x = (float) (point3D.x * cos(angle) - point3D.y * sin(angle));
-                    point3D.y = (float) (x * sin(angle) + point3D.y * cos(angle));
-                    point3D.y += CENTER.y;
-                    point3D.x += CENTER.x;
+                for (Point3D point : points) {
+                    point.y -= CENTER.y;
+                    point.x -= CENTER.x;
+                    float x = point.x;
+                    point.x = (float) (point.x * cos(angle) - point.y * sin(angle));
+                    point.y = (float) (x * sin(angle) + point.y * cos(angle));
+                    point.y += CENTER.y;
+                    point.x += CENTER.x;
                 }
                 break;
+        }
+        for (Point3D point : points) {
+            if (point.z >= 0) {
+                visiblePoints.add(point);
+            }
         }
     }
 

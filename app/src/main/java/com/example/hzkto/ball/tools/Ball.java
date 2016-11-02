@@ -5,8 +5,6 @@ import android.graphics.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.hzkto.ball.Constants.POLYGONS;
-import static com.example.hzkto.ball.Constants.onX;
 import static com.example.hzkto.ball.Constants.onY;
 
 /**
@@ -14,46 +12,42 @@ import static com.example.hzkto.ball.Constants.onY;
  */
 
 public class Ball {
-    List<Circle3D> circlesOnX;
-    List<Circle3D> circlesOnY;
-    float radius;
+    List<Circle3D> circles;
 
-    public Ball(float radius, float angle) {
-        circlesOnX = new ArrayList<>();
-        circlesOnY = new ArrayList<>();
-        this.radius = radius;
+
+    public Ball(float radius, int polygons, float angle) {
         float angleFor360 = angle;
-        float step = (float) (2 * Math.PI / POLYGONS);
+        circles = new ArrayList<>();
+        float step = (float) (2 * Math.PI / polygons);
+//        do {
+////            circles.add(new Circle3D(radius, polygons, angle, onX));
+//            circles.add(new Circle3D(radius, polygons, angle, onY));
+////            circles.add(new Circle3D(radius, polygons, angle, Circle3D.onZ));
+//            angle += step;
+//        } while (angle < angleFor360 + 2 * Math.PI);
 
-        do {
-            circlesOnX.add(new Circle3D(radius, POLYGONS, angle, onX));
-            circlesOnY.add(new Circle3D(radius, POLYGONS, angle, onY));
-            angle += step;
-        } while (angle < angleFor360 + 2 * Math.PI);
+        circles.add(new Circle3D(radius, polygons, angle, onY));
     }
 
-    public void rotate(float angle) {
-        circlesOnX.clear();
-        circlesOnY.clear();
-        float angleFor360 = angle;
-        float step = (float) (2 * Math.PI / POLYGONS);
-        do {
-            circlesOnX.add(new Circle3D(radius, POLYGONS, angle, onX));
-            circlesOnY.add(new Circle3D(radius, POLYGONS, angle, onY));
-            angle += step;
-        } while (angle < angleFor360 + 2 * Math.PI);
+    public void rotate(float angle, int type) {
+
+    }
+
+    public Path getPathVisible() {
+        Path path = new Path();
+        for (Circle3D circle : circles) {
+            path.moveTo(circle.visiblePoints.get(0).x, circle.visiblePoints.get(0).y);
+            for (Point3D point : circle.visiblePoints) {
+                path.lineTo(point.x, point.y);
+            }
+        }
+        return path;
     }
 
     public Path getPath() {
         Path path = new Path();
-        for (Circle3D circle : circlesOnX) {
-            path.moveTo(circle.getPoints().get(0).x, circle.getPoints().get(0).y);
-            for (Point3D point : circle.points) {
-                path.lineTo(point.x, point.y);
-            }
-        }
-        for (Circle3D circle : circlesOnY) {
-            path.moveTo(circle.getPoints().get(0).x, circle.getPoints().get(0).y);
+        for (Circle3D circle : circles) {
+            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
             for (Point3D point : circle.points) {
                 path.lineTo(point.x, point.y);
             }
