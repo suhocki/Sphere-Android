@@ -5,7 +5,7 @@ package com.example.hzkto.ball;
  */
 
 public final class Constants {
-    public static final int POLYGONS = 40;
+    public static final int POLYGONS = 18;
     public static final float RADIUS = 500;
     public static final float LINE_WIDTH = 5;
     public static final int onX = 0;
