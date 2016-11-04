@@ -74,11 +74,7 @@ public class Circle3D {
                 }
                 break;
         }
-        for (Point3D point : points) {
-            if (point.z >= 0) {
-                visiblePoints.add(point);
-            }
-        }
+
     }
 
 //    public static void staticRotate(List<Point3D> points, float angle, int type) {

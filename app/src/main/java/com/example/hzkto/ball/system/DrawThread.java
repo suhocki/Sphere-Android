@@ -7,11 +7,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.view.SurfaceHolder;
 
-import com.example.hzkto.ball.tools.Ball3D;
 import com.example.hzkto.ball.tools.Point3D;
+import com.example.hzkto.ball.tools.Sphere3D;
 
 import static com.example.hzkto.ball.Constants.LINE_WIDTH;
-import static com.example.hzkto.ball.Constants.POLYGONS;
 import static com.example.hzkto.ball.Constants.RADIUS;
 import static com.example.hzkto.ball.Constants.onX;
 import static com.example.hzkto.ball.Constants.onY;
@@ -26,7 +25,7 @@ public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private long prevTime;
     Paint paint;
-    Ball3D ball;
+    Sphere3D ball;
     float angle;
 
     public DrawThread(SurfaceHolder surfaceHolder, Resources resources) {
@@ -37,7 +36,7 @@ public class DrawThread extends Thread {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(LINE_WIDTH);
         angle = (float) Math.toRadians(0);
-        ball = new Ball3D(RADIUS, POLYGONS, 0, onX, 0, onY);
+        ball = new Sphere3D(RADIUS, 0, onX, 0, onY);
     }
 
     public void setRunning(boolean run) {
@@ -58,12 +57,13 @@ public class DrawThread extends Thread {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
-                        angle += (float) Math.toRadians(1);
+//                        angle += (float) Math.toRadians(0.1);
+                        angle = (float) Math.toRadians(0);
 //                        ball.rotate(angle, onX);
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 //                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPath(), paint);
 //                        canvas.drawPath((new Ball3D(RADIUS, POLYGONS, angle, onX, angle, onX)).getPath(), paint);
-                        canvas.drawPath((new Ball3D(RADIUS, POLYGONS, angle, onX, angle, onY)).getPath(), paint);
+                        canvas.drawPath((new Sphere3D(RADIUS, angle, onY, angle, onY)).getPathVisible(), paint);
 //                        canvas.drawPath(ball.getPath(), paint);
                     }
                 }
