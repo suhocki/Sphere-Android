@@ -57,13 +57,14 @@ public class DrawThread extends Thread {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
-//                        angle += (float) Math.toRadians(0.1);
-                        angle = (float) Math.toRadians(0);
+                        angle += (float) Math.toRadians(0.2);
+//                        angle = (float) Math.toRadians(0);
 //                        ball.rotate(angle, onX);
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 //                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPath(), paint);
 //                        canvas.drawPath((new Ball3D(RADIUS, POLYGONS, angle, onX, angle, onX)).getPath(), paint);
-                        canvas.drawPath((new Sphere3D(RADIUS, angle, onY, angle, onY)).getPathVisible(), paint);
+//                        canvas.drawPath((new Sphere3D(RADIUS, angle, onY, angle, onY)).getPathVisible(), paint);
+                        canvas.drawPath((new Sphere3D(RADIUS, angle, onX, angle, onY)).getPathPolygonsVisible(), paint);
 //                        canvas.drawPath(ball.getPath(), paint);
                     }
                 }

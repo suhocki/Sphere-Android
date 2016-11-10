@@ -43,7 +43,7 @@ public class Sphere3D {
             circlesXZ.add(circleBuff);
         }
 
-//        fillPolygons();
+        fillPolygons();
     }
 
 //    public void rotate(float angle, int type) {
@@ -133,10 +133,37 @@ public class Sphere3D {
         return path;
     }
 
+    public Path getPathPolygons() {
+        Path path = new Path();
+        for (Polygon3D polygon : polygons) {
+            path.addPath(polygon.getPath());
+        }
+        return path;
+    }
+
+    public Path getPathPolygonsVisible() {
+        Path path = new Path();
+        for (Polygon3D polygon : polygons) {
+            for (Point3D point : polygon.points) {
+                boolean isDrawed = false;
+                if (point.z >= 0 && isDrawed == false) {
+                    path.addPath(polygon.getPath());
+                    isDrawed = true;
+                }
+            }
+        }
+        return path;
+    }
+
     private void fillPolygons() {
-        for (Circle3D circle : circlesXY) {
-            for (Point3D point : circle.points) {
+        for (int iCircle = 1; iCircle < circlesXY.size(); iCircle += 1) {
+            for (int iPoint = 1; iPoint < circlesXY.get(iCircle).points.size(); iPoint++) {
                 Polygon3D polygon = new Polygon3D();
+                polygon.addPoint(circlesXY.get(iCircle - 1).getPoints().get(iPoint - 1));
+                polygon.addPoint(circlesXY.get(iCircle - 1).getPoints().get(iPoint));
+                polygon.addPoint(circlesXY.get(iCircle).getPoints().get(iPoint));
+                polygon.addPoint(circlesXY.get(iCircle).getPoints().get(iPoint - 1));
+                polygons.add(polygon);
             }
         }
     }

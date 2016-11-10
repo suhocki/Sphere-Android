@@ -1,5 +1,7 @@
 package com.example.hzkto.ball.tools;
 
+import android.graphics.Path;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,5 +22,14 @@ public class Polygon3D {
 
     public void addPoint(Point3D point) {
         this.points.add(point);
+    }
+
+    public Path getPath() {
+        Path path = new Path();
+        path.moveTo(points.get(0).x, points.get(0).y);
+        for (Point3D point : points) {
+            path.lineTo(point.x, point.y);
+        }
+        return path;
     }
 }
