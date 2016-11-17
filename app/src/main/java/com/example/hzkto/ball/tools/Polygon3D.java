@@ -1,9 +1,12 @@
 package com.example.hzkto.ball.tools;
 
+import android.graphics.Color;
 import android.graphics.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.abs;
 
 /**
  * Created by hzkto on 11/4/2016.
@@ -11,6 +14,7 @@ import java.util.List;
 
 public class Polygon3D {
     List<Point3D> points;
+    Point3D center;
 
     public Polygon3D() {
         this.points = new ArrayList<>();
@@ -32,4 +36,52 @@ public class Polygon3D {
         }
         return path;
     }
+
+    public Path getColoredPath(Color color) {
+        Path path = new Path();
+        path.moveTo(points.get(0).x, points.get(0).y);
+        for (Point3D point : points) {
+            path.lineTo(point.x, point.y);
+        }
+        return path;
+    }
+
+    public Point3D getCenter() {
+        if (center == null) {
+            float xSum = 0, ySum = 0, zSum = 0;
+            for (Point3D point : points) {
+                xSum += point.x;
+                ySum += point.y;
+                zSum += point.z;
+            }
+            center = new Point3D(xSum / points.size(), ySum / points.size(), zSum / points.size());
+        }
+        return center;
+    }
+
+    public double getLightCoefficient(Point3D camPoint) {
+        float X1 = points.get(0).x;
+        float X2 = points.get(1).x;
+        float X3 = points.get(2).x;
+        float Y1 = points.get(0).y;
+        float Y2 = points.get(1).y;
+        float Y3 = points.get(2).y;
+        float Z1 = points.get(0).z;
+        float Z2 = points.get(1).z;
+        float Z3 = points.get(2).z;
+        float A = Y1 * (Z2 - Z3) + Y2 * (Z3 - Z1) + Y3 * (Z1 - Z2);
+        float B = Z1 * (X2 - X3) + Z2 * (X3 - X1) + Z3 * (X1 - X2);
+        float C = X1 * (Y2 - Y3) + X2 * (Y3 - Y1) + X3 * (Y1 - Y2);
+        float x1 = center.x;
+        float x2 = camPoint.x;
+        float y1 = center.y;
+        float y2 = camPoint.y;
+        float z1 = center.z;
+        float z2 = camPoint.z;
+        return abs((A*(x2 -x1 )+B*(y2 -y1 )+C*(z2 -z1 )) /
+                Math.sqrt(A*A+B*B+C*C) /
+                Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)));
+    }
+
+
 }

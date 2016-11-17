@@ -1,5 +1,8 @@
 package com.example.hzkto.ball.tools;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 
 import java.util.ArrayList;
@@ -16,25 +19,23 @@ public class Sphere3D {
     List<Circle3D> circlesXZ;
     List<Polygon3D> polygons;
     Circle3D mainCircle;
+    Canvas canvas;
+    Point3D camPoint;
 
-    public Sphere3D(float radius, float angleAlpha, int typeAlpha, float angleBeta, int typeBeta) {
+    public Sphere3D(Canvas canvas, Point3D camPoint, float radius, float angleAlpha, int typeAlpha, float angleBeta, int typeBeta) {
         circlesXY = new ArrayList<>();
         circlesXZ = new ArrayList<>();
         polygons = new ArrayList<>();
-//        circlesXY_visible = new ArrayList<>();
-//        circlesXZ_visible = new ArrayList<>();
-
+        this.camPoint = camPoint;
+        this.canvas = canvas;
         float angleFor360 = angleAlpha;
         float step = (float) (2 * Math.PI / POLYGONS);
         do {
             circlesXY.add(new Circle3D(radius, POLYGONS, angleAlpha, typeAlpha, angleBeta, typeBeta));
             angleAlpha += step;
         } while (angleAlpha < angleFor360 + 2 * Math.PI);
-
         circlesXY.add(new Circle3D(radius, POLYGONS, angleAlpha, typeAlpha, angleBeta, typeBeta));
         mainCircle = circlesXY.get(0);
-
-
         for (int i = 0; i < mainCircle.points.size(); i++) {
             Circle3D circleBuff = new Circle3D();
             for (Circle3D circle : circlesXY) {
@@ -45,36 +46,6 @@ public class Sphere3D {
 
         fillPolygons();
     }
-
-//    public void rotate(float angle, int type) {
-//        switch (type) {
-//            case onX:
-//                for (Circle3D circle : circlesXY) {
-//                    Circle3D.staticRotate(circle.getPoints(), angle, onX);
-//                }
-//                for (Circle3D circle : circlesXZ) {
-//                    Circle3D.staticRotate(circle.getPoints(), angle, onX);
-//                }
-//                break;
-//            case onY:
-//                for (Circle3D circle : circlesXY) {
-//                    Circle3D.staticRotate(circle.getPoints(), angle, onY);
-//                }
-//                for (Circle3D circle : circlesXZ) {
-//                    Circle3D.staticRotate(circle.getPoints(), angle, onY);
-//                }
-//                break;
-//            case onZ:
-//                for (Circle3D circle : circlesXY) {
-//                    Circle3D.staticRotate(circle.getPoints(), angle, onZ);
-//                }
-//                for (Circle3D circle : circlesXZ) {
-//                    Circle3D.staticRotate(circle.getPoints(), angle, onZ);
-//                }
-//                break;
-//        }
-//    }
-
 
     public Path getPath() {
         Path path = new Path();
@@ -141,6 +112,17 @@ public class Sphere3D {
         return path;
     }
 
+    public void draw() {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        for (Polygon3D polygon : polygons) {
+            if (polygon.getCenter().z >= 0) {
+                paint.setColor(Color.rgb((int) (255 * polygon.getLightCoefficient(camPoint)), 0, 0));
+                canvas.drawPath(polygon.getPath(), paint);
+            }
+        }
+    }
+
     public Path getPathPolygonsVisible() {
         Path path = new Path();
         for (Polygon3D polygon : polygons) {
@@ -167,45 +149,4 @@ public class Sphere3D {
             }
         }
     }
-//    public Path getPathVisible() {
-//        deleteInvisibleShape();
-//        Path path = new Path();
-//        for (Circle3D circle : circlesXY_visible) {
-//            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
-//            for (Point3D point : circle.points) {
-//                path.lineTo(point.x, point.y);
-//            }
-//        }
-//        for (Circle3D circle : circlesXZ_visible) {
-//            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
-//            for (Point3D point : circle.points) {
-//                path.lineTo(point.x, point.y);
-//            }
-//        }
-//
-//        return path;
-//    }
-
-//    public void deleteInvisibleShape() {
-//        for (Circle3D circle : circlesXY) {
-//            Circle3D circleBuff = new Circle3D();
-//            for (Point3D point : circle.points) {
-//                if (point.z >= 0) {
-//                    circleBuff.addPoint(point);
-//                } else circleBuff.addPoint();
-//            }
-//            circlesXY_visible.add(circleBuff);
-//        }
-//        for (Circle3D circle : circlesXZ) {
-//            Circle3D circleBuff = new Circle3D();
-//            for (Point3D point : circle.points) {
-//                if (point.z >= 0) {
-//                    circleBuff.addPoint(point);
-//                }
-//            }
-//            if (!circleBuff.points.isEmpty()) {
-//                circlesXZ_visible.add(circleBuff);
-//            }
-//        }
-//    }
 }

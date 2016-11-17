@@ -27,6 +27,7 @@ public class DrawThread extends Thread {
     Paint paint;
     Sphere3D ball;
     float angle;
+    Point3D camPoint;
 
     public DrawThread(SurfaceHolder surfaceHolder, Resources resources) {
         this.surfaceHolder = surfaceHolder;
@@ -36,7 +37,9 @@ public class DrawThread extends Thread {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(LINE_WIDTH);
         angle = (float) Math.toRadians(0);
-        ball = new Sphere3D(RADIUS, 0, onX, 0, onY);
+        camPoint = CENTER;
+        camPoint.z = 800;
+//        ball = new Sphere3D(RADIUS, 0, onX, 0, onY);
     }
 
     public void setRunning(boolean run) {
@@ -64,8 +67,11 @@ public class DrawThread extends Thread {
 //                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPath(), paint);
 //                        canvas.drawPath((new Ball3D(RADIUS, POLYGONS, angle, onX, angle, onX)).getPath(), paint);
 //                        canvas.drawPath((new Sphere3D(RADIUS, angle, onY, angle, onY)).getPathVisible(), paint);
-                        canvas.drawPath((new Sphere3D(RADIUS, angle, onX, angle, onY)).getPathPolygonsVisible(), paint);
+//                        canvas.drawPath((new Sphere3D(RADIUS, angle, onX, angle, onY)).getPathPolygons(), paint);
+                        Sphere3D sphere = new Sphere3D(canvas, camPoint, RADIUS, angle, onX, angle, onY);
+//                        canvas
 //                        canvas.drawPath(ball.getPath(), paint);
+                        sphere.draw();
                     }
                 }
             } finally {
