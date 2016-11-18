@@ -67,8 +67,7 @@ public class Polygon3D {
             X1 = points.get(3).x;
             Y1 = points.get(3).y;
             Z1 = points.get(3).z;
-        } else
-        if (X3 == X2 && Y3 == Y2 && Z3 == Z2) {
+        } else if (X3 == X2 && Y3 == Y2 && Z3 == Z2) {
             X2 = points.get(3).x;
             Y2 = points.get(3).y;
             Z2 = points.get(3).z;
@@ -86,6 +85,4 @@ public class Polygon3D {
                 Math.sqrt(A * A + B * B + C * C) /
                 Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)));
     }
-
-
 }

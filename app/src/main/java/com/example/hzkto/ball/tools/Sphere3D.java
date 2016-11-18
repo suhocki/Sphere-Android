@@ -19,22 +19,34 @@ public class Sphere3D {
     List<Circle3D> circlesXZ;
     List<Polygon3D> polygons;
     Circle3D mainCircle;
-    Canvas canvas;
     Point3D camPoint;
+    private float angleX;
+    private float angleY;
+    private static final float STEP_ANGLE = (float) Math.toRadians(1);
 
-    public Sphere3D(Canvas canvas, Point3D camPoint, float radius, float angleAlpha, int typeAlpha, float angleBeta, int typeBeta) {
+    public Sphere3D(Point3D camPoint, float radius, float angleX, float angleBeta) {
         circlesXY = new ArrayList<>();
         circlesXZ = new ArrayList<>();
         polygons = new ArrayList<>();
+        this.angleX = angleX;
+        this.angleY = angleBeta;
+        Update(camPoint, radius);
+    }
+
+    public void Update(Point3D camPoint, float radius) {
+        angleX += STEP_ANGLE;
+        angleY += STEP_ANGLE;
+        circlesXY.clear();
+        circlesXZ.clear();
+        polygons.clear();
         this.camPoint = camPoint;
-        this.canvas = canvas;
-        float angleFor360 = angleAlpha;
+        float angleFor360 = angleX;
         float step = (float) (2 * Math.PI / POLYGONS);
         do {
-            circlesXY.add(new Circle3D(radius, POLYGONS, angleAlpha, typeAlpha, angleBeta, typeBeta));
-            angleAlpha += step;
-        } while (angleAlpha < angleFor360 + 2 * Math.PI);
-        circlesXY.add(new Circle3D(radius, POLYGONS, angleAlpha, typeAlpha, angleBeta, typeBeta));
+            circlesXY.add(new Circle3D(radius, POLYGONS, angleX, angleY));
+            angleX += step;
+        } while (angleX < angleFor360 + 2 * Math.PI);
+        circlesXY.add(new Circle3D(radius, POLYGONS, angleX, angleY));
         mainCircle = circlesXY.get(0);
         for (int i = 0; i < mainCircle.points.size(); i++) {
             Circle3D circleBuff = new Circle3D();
@@ -84,23 +96,6 @@ public class Sphere3D {
                 }
             }
         }
-        for (Circle3D circle : circlesXZ) {
-            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
-            boolean continueDraw = true;
-            for (Point3D point : circle.points) {
-                if (point.z >= 0) {
-                    if (continueDraw) {
-                        path.lineTo(point.x, point.y);
-                    } else {
-                        path.moveTo(point.x, point.y);
-                        continueDraw = true;
-                    }
-                } else {
-                    continueDraw = false;
-                }
-            }
-        }
-
         return path;
     }
 
@@ -112,7 +107,7 @@ public class Sphere3D {
         return path;
     }
 
-    public void draw() {
+    public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
 //        paint.setStyle(Paint.Style.STROKE);

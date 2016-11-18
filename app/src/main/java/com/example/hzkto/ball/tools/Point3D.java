@@ -5,7 +5,7 @@ package com.example.hzkto.ball.tools;
  */
 
 public class Point3D {
-    public float x,y,z;
+    public float x, y, z;
 
     public Point3D(float x, float y, float z) {
         this.x = x;

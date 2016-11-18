@@ -4,9 +4,9 @@ package com.example.hzkto.ball.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.hzkto.ball.Constants.onX;
-import static com.example.hzkto.ball.Constants.onY;
-import static com.example.hzkto.ball.Constants.onZ;
+import static com.example.hzkto.ball.Constants.TYPE_X;
+import static com.example.hzkto.ball.Constants.TYPE_Y;
+import static com.example.hzkto.ball.Constants.TYPE_Z;
 import static com.example.hzkto.ball.system.DrawThread.CENTER;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -20,7 +20,7 @@ public class Circle3D {
     List<Point3D> points;
     List<Point3D> visiblePoints;
 
-    public Circle3D(float radius, int polygons, float angleAlpha, int typeAlpha, float angleBeta, int typeBeta) {
+    public Circle3D(float radius, int polygons, float angleAlpha, float angleBeta) {
         points = new ArrayList<>();
         visiblePoints = new ArrayList<>();
         float step = (float) (2 * Math.PI / polygons);
@@ -30,21 +30,22 @@ public class Circle3D {
             alpha += step;
         } while (alpha < 2 * Math.PI);
         points.add(new Point3D((float) (CENTER.x + radius * Math.cos(0)), (float) (CENTER.y - radius * Math.sin(0)), 0));
-        rotate(points, angleAlpha, typeAlpha);
-        rotate(points, angleBeta, typeBeta);
+        rotate(points, angleAlpha, TYPE_X);
+        rotate(points, angleBeta, TYPE_Y);
 
     }
 
-    public Circle3D() {
+    Circle3D() {
         this.points = new ArrayList<>();
     }
 
-    public void addPoint(Point3D point) {
+    void addPoint(Point3D point) {
         this.points.add(point);
     }
-    public void rotate(List<Point3D> points, float angle, int type) {
+
+    private void rotate(List<Point3D> points, float angle, int type) {
         switch (type) {
-            case onX:
+            case TYPE_X:
                 for (Point3D point : points) {
                     point.y -= CENTER.y;
                     float y = point.y;
@@ -53,7 +54,7 @@ public class Circle3D {
                     point.y += CENTER.y;
                 }
                 break;
-            case onY:
+            case TYPE_Y:
                 for (Point3D point : points) {
                     point.x -= CENTER.x;
                     float x = point.x;
@@ -62,7 +63,7 @@ public class Circle3D {
                     point.x += CENTER.x;
                 }
                 break;
-            case onZ:
+            case TYPE_Z:
                 for (Point3D point : points) {
                     point.y -= CENTER.y;
                     point.x -= CENTER.x;
@@ -79,7 +80,7 @@ public class Circle3D {
 
 //    public static void staticRotate(List<Point3D> points, float angle, int type) {
 //        switch (type) {
-//            case onX:
+//            case TYPE_X:
 //                for (Point3D point : points) {
 //                    point.y -= CENTER.y;
 //                    point.y = (float) (point.z * sin(angle) + point.y * cos(angle));
@@ -87,7 +88,7 @@ public class Circle3D {
 //                    point.y += CENTER.y;
 //                }
 //                break;
-//            case onY:
+//            case TYPE_Y:
 //                for (Point3D point : points) {
 //                    point.x -= CENTER.x;
 //                    point.x = (float) (point.x * cos(angle) + point.z * sin(angle));
@@ -95,7 +96,7 @@ public class Circle3D {
 //                    point.x += CENTER.x;
 //                }
 //                break;
-//            case onZ:
+//            case TYPE_Z:
 //                for (Point3D point : points) {
 //                    point.y -= CENTER.y;
 //                    point.x -= CENTER.x;
