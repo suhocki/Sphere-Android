@@ -11,7 +11,6 @@ import com.example.hzkto.ball.tools.Point3D;
 import com.example.hzkto.ball.tools.Sphere3D;
 
 import static com.example.hzkto.ball.Constants.LINE_WIDTH;
-import static com.example.hzkto.ball.Constants.RADIUS;
 import static com.example.hzkto.ball.Constants.onX;
 import static com.example.hzkto.ball.Constants.onY;
 
@@ -28,6 +27,8 @@ public class DrawThread extends Thread {
     Sphere3D ball;
     float angle;
     Point3D camPoint;
+    float radius;
+    private boolean radiusIsDec;
 
     public DrawThread(SurfaceHolder surfaceHolder, Resources resources) {
         this.surfaceHolder = surfaceHolder;
@@ -38,7 +39,9 @@ public class DrawThread extends Thread {
         paint.setStrokeWidth(LINE_WIDTH);
         angle = (float) Math.toRadians(0);
         camPoint = CENTER;
-        camPoint.z = 800;
+        camPoint.z = 4000;
+        radius = 500;
+        radiusIsDec = true;
 //        ball = new Sphere3D(RADIUS, 0, onX, 0, onY);
     }
 
@@ -60,17 +63,12 @@ public class DrawThread extends Thread {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
-                        angle += (float) Math.toRadians(0.2);
-//                        angle = (float) Math.toRadians(0);
-//                        ball.rotate(angle, onX);
+
+//                            radius -= 1;
+//                        camPoint.z += 10;
+                        angle += (float) Math.toRadians(1);
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-//                        canvas.drawPath((new Ball(RADIUS, POLYGONS, angle)).getPath(), paint);
-//                        canvas.drawPath((new Ball3D(RADIUS, POLYGONS, angle, onX, angle, onX)).getPath(), paint);
-//                        canvas.drawPath((new Sphere3D(RADIUS, angle, onY, angle, onY)).getPathVisible(), paint);
-//                        canvas.drawPath((new Sphere3D(RADIUS, angle, onX, angle, onY)).getPathPolygons(), paint);
-                        Sphere3D sphere = new Sphere3D(canvas, camPoint, RADIUS, angle, onX, angle, onY);
-//                        canvas
-//                        canvas.drawPath(ball.getPath(), paint);
+                        Sphere3D sphere = new Sphere3D(canvas, camPoint, radius, angle, onX, angle, onY);
                         sphere.draw();
                     }
                 }

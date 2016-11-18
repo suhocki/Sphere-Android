@@ -115,9 +115,11 @@ public class Sphere3D {
     public void draw() {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
+//        paint.setStyle(Paint.Style.STROKE);
         for (Polygon3D polygon : polygons) {
             if (polygon.getCenter().z >= 0) {
-                paint.setColor(Color.rgb((int) (255 * polygon.getLightCoefficient(camPoint)), 0, 0));
+                paint.setColor(Color.rgb((int) (255 * polygon.getLightCoefficient(camPoint)), (int) (255 * polygon.getLightCoefficient(camPoint)), 0));
+//                paint.setColor(Color.rgb(180, 0, 0));
                 canvas.drawPath(polygon.getPath(), paint);
             }
         }

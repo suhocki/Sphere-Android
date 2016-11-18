@@ -1,6 +1,5 @@
 package com.example.hzkto.ball.tools;
 
-import android.graphics.Color;
 import android.graphics.Path;
 
 import java.util.ArrayList;
@@ -37,15 +36,6 @@ public class Polygon3D {
         return path;
     }
 
-    public Path getColoredPath(Color color) {
-        Path path = new Path();
-        path.moveTo(points.get(0).x, points.get(0).y);
-        for (Point3D point : points) {
-            path.lineTo(point.x, point.y);
-        }
-        return path;
-    }
-
     public Point3D getCenter() {
         if (center == null) {
             float xSum = 0, ySum = 0, zSum = 0;
@@ -69,6 +59,20 @@ public class Polygon3D {
         float Z1 = points.get(0).z;
         float Z2 = points.get(1).z;
         float Z3 = points.get(2).z;
+        if (X1 == X2 && Y1 == Y2 && Z1 == Z2) {
+            X1 = points.get(3).x;
+            Y1 = points.get(3).y;
+            Z1 = points.get(3).z;
+        } else if (X1 == X3 && Y1 == Y3 && Z1 == Z3) {
+            X1 = points.get(3).x;
+            Y1 = points.get(3).y;
+            Z1 = points.get(3).z;
+        } else
+        if (X3 == X2 && Y3 == Y2 && Z3 == Z2) {
+            X2 = points.get(3).x;
+            Y2 = points.get(3).y;
+            Z2 = points.get(3).z;
+        }
         float A = Y1 * (Z2 - Z3) + Y2 * (Z3 - Z1) + Y3 * (Z1 - Z2);
         float B = Z1 * (X2 - X3) + Z2 * (X3 - X1) + Z3 * (X1 - X2);
         float C = X1 * (Y2 - Y3) + X2 * (Y3 - Y1) + X3 * (Y1 - Y2);
@@ -78,9 +82,9 @@ public class Polygon3D {
         float y2 = camPoint.y;
         float z1 = center.z;
         float z2 = camPoint.z;
-        return abs((A*(x2 -x1 )+B*(y2 -y1 )+C*(z2 -z1 )) /
-                Math.sqrt(A*A+B*B+C*C) /
-                Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)));
+        return abs((A * (x2 - x1) + B * (y2 - y1) + C * (z2 - z1)) /
+                Math.sqrt(A * A + B * B + C * C) /
+                Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)));
     }
 
 
