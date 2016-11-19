@@ -30,10 +30,10 @@ public class Sphere3D {
         polygons = new ArrayList<>();
         this.angleX = angleX;
         this.angleY = angleBeta;
-        Update(camPoint, radius);
+        Update(camPoint, radius, 0);
     }
 
-    public void Update(Point3D camPoint, float radius) {
+    public void Update(Point3D camPoint, float radius, float angle) {
         angleX += STEP_ANGLE;
         angleY += STEP_ANGLE;
         circlesXY.clear();

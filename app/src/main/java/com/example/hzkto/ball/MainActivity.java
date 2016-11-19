@@ -15,8 +15,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
-        MySurfaceView sfvTrack = new MySurfaceView(getApplicationContext());
-//        sfvTrack.setZOrderOnTop(true);
+        MySurfaceView sfvTrack = new MySurfaceView(this);
         SurfaceHolder sfhTrackHolder = sfvTrack.getHolder();
         sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
 
