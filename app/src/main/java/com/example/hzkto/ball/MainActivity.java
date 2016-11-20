@@ -4,10 +4,10 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.widget.LinearLayout;
+import com.example.hzkto.ball.system.MySurfaceView;
 
 public class MainActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,9 +15,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
-        SurfaceView sfvTrack = (SurfaceView) findViewById(R.id.surfaceView);
-        sfvTrack.setZOrderOnTop(true);
+        MySurfaceView sfvTrack = new MySurfaceView(this);
         SurfaceHolder sfhTrackHolder = sfvTrack.getHolder();
         sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.surfaceView);
+        linearLayout.addView(sfvTrack);
     }
 }

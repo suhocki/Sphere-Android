@@ -1,9 +1,13 @@
 package com.example.hzkto.ball.system;
 
+import android.app.Activity;
 import android.content.Context;
-import android.util.AttributeSet;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.example.hzkto.ball.tools.Sphere3D;
 
 /**
  * Created by hzkto on 10/26/2016.
@@ -11,19 +15,21 @@ import android.view.SurfaceView;
 
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
-    public static int screenHeight;
-    public static int screenWidth;
+    public int screenHeight;
+    public int screenWidth;
 
-    public MySurfaceView(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
+    public MySurfaceView(Context context) {
+        super(context);
         getHolder().addCallback(this);
+        setZOrderOnTop(true);
         screenHeight = context.getResources().getDisplayMetrics().heightPixels;
         screenWidth = context.getResources().getDisplayMetrics().widthPixels;
     }
 
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawThread = new DrawThread(getHolder(), getResources());
+        drawThread = new DrawThread(getContext(), this);
         drawThread.setRunning(true);
         drawThread.start();
     }
@@ -41,8 +47,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             try {
                 drawThread.join();
                 retry = false;
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
+
 }
