@@ -13,14 +13,10 @@ import static java.lang.Math.abs;
 
 public class Polygon3D {
     List<Point3D> points;
-    Point3D center;
+    Point3D polygonCenter;
 
     public Polygon3D() {
         this.points = new ArrayList<>();
-    }
-
-    public Polygon3D(List<Point3D> points) {
-        this.points = points;
     }
 
     public void addPoint(Point3D point) {
@@ -36,20 +32,20 @@ public class Polygon3D {
         return path;
     }
 
-    public Point3D getCenter() {
-        if (center == null) {
+    public Point3D getPolygonCenter() {
+        if (polygonCenter == null) {
             float xSum = 0, ySum = 0, zSum = 0;
             for (Point3D point : points) {
                 xSum += point.x;
                 ySum += point.y;
                 zSum += point.z;
             }
-            center = new Point3D(xSum / points.size(), ySum / points.size(), zSum / points.size());
+            polygonCenter = new Point3D(xSum / points.size(), ySum / points.size(), zSum / points.size());
         }
-        return center;
+        return polygonCenter;
     }
 
-    public double getLightCoefficient(Point3D camPoint) {
+    public double getLightCoefficient(Point3D camPoint, double maxLigthDistance) {
         float X1 = points.get(0).x;
         float X2 = points.get(1).x;
         float X3 = points.get(2).x;
@@ -75,14 +71,25 @@ public class Polygon3D {
         float A = Y1 * (Z2 - Z3) + Y2 * (Z3 - Z1) + Y3 * (Z1 - Z2);
         float B = Z1 * (X2 - X3) + Z2 * (X3 - X1) + Z3 * (X1 - X2);
         float C = X1 * (Y2 - Y3) + X2 * (Y3 - Y1) + X3 * (Y1 - Y2);
-        float x1 = center.x;
+        float x1 = polygonCenter.x;
         float x2 = camPoint.x;
-        float y1 = center.y;
+        float y1 = polygonCenter.y;
         float y2 = camPoint.y;
-        float z1 = center.z;
+        float z1 = polygonCenter.z;
         float z2 = camPoint.z;
+
+        final double distanceFromCamPoint = getDistanceBetweenTwoPoints(camPoint, polygonCenter);
+        if (distanceFromCamPoint > maxLigthDistance) {
+            return 0;
+        }
         return abs((A * (x2 - x1) + B * (y2 - y1) + C * (z2 - z1)) /
                 Math.sqrt(A * A + B * B + C * C) /
                 Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)));
+    }
+
+    public static double getDistanceBetweenTwoPoints(Point3D firstPoint, Point3D secondPoint) {
+        return Math.sqrt((secondPoint.x - firstPoint.x) *(secondPoint.x - firstPoint.x) +
+                (secondPoint.y - firstPoint.y) *(secondPoint.y - firstPoint.y) +
+                (secondPoint.z - firstPoint.z) *(secondPoint.z - firstPoint.z));
     }
 }

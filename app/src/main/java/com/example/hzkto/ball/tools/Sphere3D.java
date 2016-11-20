@@ -3,7 +3,8 @@ package com.example.hzkto.ball.tools;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
+
+import com.example.hzkto.ball.system.DrawThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +21,17 @@ public class Sphere3D {
     List<Polygon3D> polygons;
     Circle3D mainCircle;
     Point3D camPoint;
-    private float angleX;
-    private float angleY;
-    private static final float STEP_ANGLE = (float) Math.toRadians(1);
+    float radius;
 
-    public Sphere3D(Point3D camPoint, float radius, float angleX, float angleBeta) {
+    public Sphere3D(Point3D camPoint, float radius, float angleX, float angleY) {
         circlesXY = new ArrayList<>();
         circlesXZ = new ArrayList<>();
         polygons = new ArrayList<>();
-        this.angleX = angleX;
-        this.angleY = angleBeta;
-        Update(camPoint, radius, 0);
+        this.radius = radius;
+        Update(camPoint, radius, angleX, angleY);
     }
 
-    public void Update(Point3D camPoint, float radius, float angle) {
-        angleX += STEP_ANGLE;
-        angleY += STEP_ANGLE;
+    public void Update(Point3D camPoint, float radius, float angleX, float angleY) {
         circlesXY.clear();
         circlesXZ.clear();
         polygons.clear();
@@ -59,79 +55,20 @@ public class Sphere3D {
         fillPolygons();
     }
 
-    public Path getPath() {
-        Path path = new Path();
-        for (Circle3D circle : circlesXY) {
-            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
-            for (Point3D point : circle.points) {
-                path.lineTo(point.x, point.y);
-            }
-        }
-        for (Circle3D circle : circlesXZ) {
-            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
-            for (Point3D point : circle.points) {
-                path.lineTo(point.x, point.y);
-            }
-        }
-
-        return path;
-    }
-
-
-    public Path getPathVisible() {
-        Path path = new Path();
-        for (Circle3D circle : circlesXY) {
-            path.moveTo(circle.points.get(0).x, circle.points.get(0).y);
-            boolean continueDraw = true;
-            for (Point3D point : circle.points) {
-                if (point.z >= 0) {
-                    if (continueDraw) {
-                        path.lineTo(point.x, point.y);
-                    } else {
-                        path.moveTo(point.x, point.y);
-                        continueDraw = true;
-                    }
-                } else {
-                    continueDraw = false;
-                }
-            }
-        }
-        return path;
-    }
-
-    public Path getPathPolygons() {
-        Path path = new Path();
-        for (Polygon3D polygon : polygons) {
-            path.addPath(polygon.getPath());
-        }
-        return path;
-    }
-
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-//        paint.setStyle(Paint.Style.STROKE);
+        double distBetwCamAndCenter = Polygon3D.getDistanceBetweenTwoPoints(DrawThread.center, camPoint);
+        double maxLigthDistance = Math.sqrt(distBetwCamAndCenter * distBetwCamAndCenter -
+                radius * radius);
+
         for (Polygon3D polygon : polygons) {
-            if (polygon.getCenter().z >= 0) {
-                paint.setColor(Color.rgb((int) (255 * polygon.getLightCoefficient(camPoint)), (int) (255 * polygon.getLightCoefficient(camPoint)), 0));
-//                paint.setColor(Color.rgb(180, 0, 0));
+            if (polygon.getPolygonCenter().z >= 0) {
+                final double lightCoefficient = polygon.getLightCoefficient(camPoint, maxLigthDistance);
+                paint.setColor(Color.rgb((int) (255 * lightCoefficient), (int) (255 * lightCoefficient), 0));
                 canvas.drawPath(polygon.getPath(), paint);
             }
         }
-    }
-
-    public Path getPathPolygonsVisible() {
-        Path path = new Path();
-        for (Polygon3D polygon : polygons) {
-            for (Point3D point : polygon.points) {
-                boolean isDrawed = false;
-                if (point.z >= 0 && isDrawed == false) {
-                    path.addPath(polygon.getPath());
-                    isDrawed = true;
-                }
-            }
-        }
-        return path;
     }
 
     private void fillPolygons() {

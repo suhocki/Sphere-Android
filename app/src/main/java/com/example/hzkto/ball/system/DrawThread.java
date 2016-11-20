@@ -13,6 +13,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
+
 import com.example.hzkto.ball.tools.Point3D;
 import com.example.hzkto.ball.tools.Sphere3D;
 
@@ -23,7 +24,7 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class DrawThread extends Thread {
-    public static Point3D CENTER;
+    public static Point3D center;
     private boolean runFlag = false;
     private SurfaceHolder surfaceHolder;
     private long prevTime;
@@ -38,12 +39,12 @@ public class DrawThread extends Thread {
     private Sensor sensorMagnet;
 
     public DrawThread(Context context, MySurfaceView surfaceView) {
-        CENTER = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
+        center = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
+        lightPoint = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
         this.surfaceHolder = surfaceView.getHolder();
         prevTime = System.currentTimeMillis();
 
         angle = 0;
-        lightPoint = CENTER;
         lightPoint.z = 4000;
         radius = 500;
 
@@ -174,10 +175,13 @@ public class DrawThread extends Thread {
                         valuesResultTemp[0] -= valuesResult2[0];
                         valuesResultTemp[1] -= valuesResult2[1];
                         valuesResultTemp[2] -= valuesResult2[2];
-                        if (Math.abs(valuesResultTemp[0]) < 20) CENTER.x += valuesResultTemp[0] * 5;
-                        if (Math.abs(valuesResultTemp[1]) < 20) CENTER.y += valuesResultTemp[1] * 5;
-                        if (Math.abs(valuesResultTemp[2]) < 20) CENTER.z += valuesResultTemp[2] * 5;
-                        sphere.Update(lightPoint, radius, angle);
+//                        if (Math.abs(valuesResultTemp[0]) < 20) center.x += valuesResultTemp[0] * 5;
+//                        if (Math.abs(valuesResultTemp[1]) < 20) center.y += valuesResultTemp[1] * 5;
+//                        if (Math.abs(valuesResultTemp[2]) < 20) center.z += valuesResultTemp[2] * 5;
+                        lightPoint.z = 100000;
+                        lightPoint.x = -200000;
+//                        center.x = 400;
+                        sphere.Update(lightPoint, 400, 1, 1);
                         sphere.draw(canvas);
                     }
                 }

@@ -12,6 +12,4 @@ public class Point3D {
         this.y = y;
         this.z = z;
     }
-
-
 }
