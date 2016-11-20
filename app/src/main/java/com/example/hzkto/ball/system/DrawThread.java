@@ -14,8 +14,8 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
-import com.example.hzkto.ball.tools.Point3D;
-import com.example.hzkto.ball.tools.Sphere3D;
+import com.example.hzkto.ball.sphere.Point3D;
+import com.example.hzkto.ball.sphere.Sphere3D;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -28,12 +28,12 @@ public class DrawThread extends Thread {
     private boolean runFlag = false;
     private SurfaceHolder surfaceHolder;
     private long prevTime;
-    //    private Paint paint;
-//    Sphere3D ball;
-    private float angle;
+    private float angleX;
+    private float angleY;
+    private float angleZ;
     private Point3D lightPoint;
     private float radius;
-
+    private int polygons;
     private SensorManager sensorManager;
     private Sensor sensorAccel;
     private Sensor sensorMagnet;
@@ -44,7 +44,10 @@ public class DrawThread extends Thread {
         this.surfaceHolder = surfaceView.getHolder();
         prevTime = System.currentTimeMillis();
 
-        angle = 0;
+        angleX = 0;
+        angleY = 0;
+        angleZ = 0;
+        polygons = 30;
         lightPoint.z = 4000;
         radius = 500;
 
@@ -142,12 +145,10 @@ public class DrawThread extends Thread {
         runFlag = run;
     }
 
-    float angleqwe;
-
     @Override
     public void run() {
         Canvas canvas;
-        Sphere3D sphere = new Sphere3D(lightPoint, radius, angle, angle);
+        Sphere3D sphere = new Sphere3D(radius, angleX, angleY, angleZ, lightPoint, polygons);
         while (runFlag) {
             long now = System.currentTimeMillis();
             long elapsedTime = now - prevTime;
@@ -178,10 +179,12 @@ public class DrawThread extends Thread {
 //                        if (Math.abs(valuesResultTemp[0]) < 20) center.x += valuesResultTemp[0] * 5;
 //                        if (Math.abs(valuesResultTemp[1]) < 20) center.y += valuesResultTemp[1] * 5;
 //                        if (Math.abs(valuesResultTemp[2]) < 20) center.z += valuesResultTemp[2] * 5;
-                        lightPoint.z = 100000;
-                        lightPoint.x = -200000;
+//                        lightPoint.x = -200000;
 //                        center.x = 400;
-                        sphere.Update(lightPoint, 400, 1, 1);
+//                        angleZ += Math.toRadians(2);
+                        angleY += Math.toRadians(5);
+//                        angleX += Math.toRadians(2);
+                        sphere.Update(radius, angleX, angleY, angleZ, lightPoint);
                         sphere.draw(canvas);
                     }
                 }

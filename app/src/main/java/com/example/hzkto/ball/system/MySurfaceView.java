@@ -1,13 +1,8 @@
 package com.example.hzkto.ball.system;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.example.hzkto.ball.tools.Sphere3D;
 
 /**
  * Created by hzkto on 10/26/2016.
