@@ -100,19 +100,6 @@ public class MathFunctions {
         float Z1 = points.get(0).z;
         float Z2 = points.get(1).z;
         float Z3 = points.get(2).z;
-        if (X1 == X2 && Y1 == Y2 && Z1 == Z2) {
-            X1 = points.get(3).x;
-            Y1 = points.get(3).y;
-            Z1 = points.get(3).z;
-        } else if (X1 == X3 && Y1 == Y3 && Z1 == Z3) {
-            X1 = points.get(3).x;
-            Y1 = points.get(3).y;
-            Z1 = points.get(3).z;
-        } else if (X3 == X2 && Y3 == Y2 && Z3 == Z2) {
-            X2 = points.get(3).x;
-            Y2 = points.get(3).y;
-            Z2 = points.get(3).z;
-        }
         float A = Y1 * (Z2 - Z3) + Y2 * (Z3 - Z1) + Y3 * (Z1 - Z2);
         float B = Z1 * (X2 - X3) + Z2 * (X3 - X1) + Z3 * (X1 - X2);
         float C = X1 * (Y2 - Y3) + X2 * (Y3 - Y1) + X3 * (Y1 - Y2);

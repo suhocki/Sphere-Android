@@ -39,14 +39,17 @@ public class Sphere3D {
         do {
             circles.add(new Circle3D(center, radius, polygons, angleX, angleY, angleZ));
             angleX += step;
-        } while (angleX < angleFor360 + 2 * Math.PI);
+        } while (angleX < angleFor360 + 1 * Math.PI);
         circles.add(new Circle3D(center, radius, polygons, angleX, angleY, angleZ));
         fillPolygons();
     }
 
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
+        canvas.drawRGB(225, 225, 255);
         paint.setStyle(Paint.Style.FILL);
+//        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
         double distBetwCamAndCenter = MathFunctions.getDistanceBetweenTwoPoints(center, camPoint);
         double maxLigthDistance = Math.sqrt(distBetwCamAndCenter * distBetwCamAndCenter -
                 radius * radius);
@@ -61,6 +64,9 @@ public class Sphere3D {
                 paint.setColor(Color.rgb(
                         (int) (255 * lightCoefficient),
                         (int) (255 * lightCoefficient),
+//                        (int) (255 * lightCoefficient))
+//                        0,255,0)
+//                        0,
                         0)
                 );
                 canvas.drawPath(polygon.getPath(), paint);
@@ -68,17 +74,24 @@ public class Sphere3D {
         }
     }
 
+
     private void fillPolygons() {
-        for (int iCircle = 1; iCircle < circles.size(); iCircle += 2) {
-            for (int iPoint = 1; iPoint < circles.get(iCircle).points.size(); iPoint++) {
+        int pointsCount = circles.get(0).points.size();
+        int circlesCount = circles.size();
+
+        for (int iCircle = 1; iCircle < circlesCount; iCircle++) {
+            for (int iPoint = 1; iPoint < pointsCount; iPoint++) {
                 Polygon3D polygon = new Polygon3D();
-//                if (iPoint == 1) {
-//                    polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint - 1));
-//                    polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint));
-//                    polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint));
-//                    polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint - 1));
-//                } else
-                if (iPoint == (circles.get(iCircle).points.size() - 1)) {
+                if (iPoint == pointsCount / 2) {
+                    polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint - 1));
+                    polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint));
+                    polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint - 1));
+                } else
+                if (iPoint == 1) {
+                    polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint - 1));
+                    polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint));
+                    polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint));
+                } else if (iPoint == (circles.get(iCircle).points.size() - 1)) {
                     polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint));
                     polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint - 1));
                     polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint - 1));
@@ -92,4 +105,5 @@ public class Sphere3D {
             }
         }
     }
+
 }

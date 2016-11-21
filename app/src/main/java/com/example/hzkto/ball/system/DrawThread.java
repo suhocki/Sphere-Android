@@ -43,11 +43,10 @@ public class DrawThread extends Thread {
         lightPoint = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
         this.surfaceHolder = surfaceView.getHolder();
         prevTime = System.currentTimeMillis();
-
         angleX = 0;
         angleY = 0;
         angleZ = 0;
-        polygons = 30;
+        polygons = 60;
         lightPoint.z = 4000;
         radius = 500;
 
@@ -160,7 +159,7 @@ public class DrawThread extends Thread {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
-
+//                        canvas.drawColor(Color.CYAN, PorterDuff.Mode.CLEAR);
                         float[] valuesResultTemp = valuesResult2.clone();
                         getDeviceOrientation();
                         getActualDeviceOrientation();
@@ -181,8 +180,13 @@ public class DrawThread extends Thread {
 //                        if (Math.abs(valuesResultTemp[2]) < 20) center.z += valuesResultTemp[2] * 5;
 //                        lightPoint.x = -200000;
 //                        center.x = 400;
-//                        angleZ += Math.toRadians(2);
-                        angleY += Math.toRadians(5);
+                        angleZ += Math.toRadians(1);
+                        angleY -= Math.toRadians(1);
+                        angleX += Math.toRadians(0.2);
+                        lightPoint.x = 7000;
+                        lightPoint.y = -7000;
+                        lightPoint.z = 7000;
+
 //                        angleX += Math.toRadians(2);
                         sphere.Update(radius, angleX, angleY, angleZ, lightPoint);
                         sphere.draw(canvas);

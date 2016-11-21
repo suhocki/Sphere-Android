@@ -1,6 +1,7 @@
 package com.example.hzkto.ball.system;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -13,14 +14,13 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     public int screenHeight;
     public int screenWidth;
 
-    public MySurfaceView(Context context) {
-        super(context);
+    public MySurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         getHolder().addCallback(this);
         setZOrderOnTop(true);
         screenHeight = context.getResources().getDisplayMetrics().heightPixels;
         screenWidth = context.getResources().getDisplayMetrics().widthPixels;
     }
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
