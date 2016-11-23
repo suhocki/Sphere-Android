@@ -3,6 +3,7 @@ package com.example.hzkto.ball.system;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,12 +11,15 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.text.TextPaint;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.example.hzkto.ball.sphere.Point3D;
 import com.example.hzkto.ball.sphere.Sphere3D;
+import com.example.hzkto.ball.tools.MathFunctions;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -23,33 +27,36 @@ import static android.content.Context.SENSOR_SERVICE;
  * Created by hzkto on 10/26/2016.
  */
 
-public class DrawThread extends Thread {
+public class DrawThread extends Thread implements View.OnTouchListener, View.OnClickListener {
     public static Point3D center;
+    private final Context context;
     private boolean runFlag = false;
     private SurfaceHolder surfaceHolder;
     private long prevTime;
-    private float angleX;
-    private float angleY;
-    private float angleZ;
+    private double angleX;
+    private double angleY;
+    private double angleZ;
     private Point3D lightPoint;
-    private float radius;
+    private double radius;
     private int polygons;
     private SensorManager sensorManager;
     private Sensor sensorAccel;
     private Sensor sensorMagnet;
+    private Sphere3D sphere;
 
     public DrawThread(Context context, MySurfaceView surfaceView) {
+        this.context = context;
         center = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
         lightPoint = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
         this.surfaceHolder = surfaceView.getHolder();
         prevTime = System.currentTimeMillis();
         angleX = 0;
         angleY = 0;
-        angleZ = 0;
-        polygons = 60;
-        lightPoint.z = 4000;
+        angleZ = Math.toRadians(90);
+        polygons = 36;
+        lightPoint.z = -1000;
         radius = 500;
-
+        surfaceView.setOnTouchListener(this);
         initSensors(context);
     }
 
@@ -147,7 +154,7 @@ public class DrawThread extends Thread {
     @Override
     public void run() {
         Canvas canvas;
-        Sphere3D sphere = new Sphere3D(radius, angleX, angleY, angleZ, lightPoint, polygons);
+        sphere = new Sphere3D(radius, angleX, angleY, angleZ, lightPoint, polygons);
         while (runFlag) {
             long now = System.currentTimeMillis();
             long elapsedTime = now - prevTime;
@@ -180,15 +187,18 @@ public class DrawThread extends Thread {
 //                        if (Math.abs(valuesResultTemp[2]) < 20) center.z += valuesResultTemp[2] * 5;
 //                        lightPoint.x = -200000;
 //                        center.x = 400;
-                        angleZ += Math.toRadians(1);
-                        angleY -= Math.toRadians(1);
-                        angleX += Math.toRadians(0.2);
+//                        angleZ += Math.toRadians(1);
+//                        angleY -= Math.toRadians(1);
+//                        angleX += Math.toRadians(0.2);
                         lightPoint.x = 7000;
                         lightPoint.y = -7000;
                         lightPoint.z = 7000;
 
 //                        angleX += Math.toRadians(2);
-                        sphere.Update(radius, angleX, angleY, angleZ, lightPoint);
+                        if (radius < 10) {
+                            radius = 10;
+                        }
+                        sphere.update(radius, angleX, angleY, angleZ, lightPoint);
                         sphere.draw(canvas);
                     }
                 }
@@ -204,4 +214,94 @@ public class DrawThread extends Thread {
         return String.format("%1$.1f\t\t%2$.1f\t\t%3$.1f", values[0], values[1], values[2]);
     }
 
+    private int deltaX;
+    boolean inTouch;
+    int downPI;
+    int upPI;
+    Point firstPointBefore;
+    Point secondPointBefore;
+    Point firstPointAfter;
+    Point secondPointAfter;
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+
+        // событие
+        int actionMask = event.getActionMasked();
+        // индекс касания
+        int pointerIndex = event.getActionIndex();
+        // число касаний
+        int pointerCount = event.getPointerCount();
+
+        switch (actionMask) {
+            case MotionEvent.ACTION_DOWN: // первое касание
+                inTouch = true;
+            case MotionEvent.ACTION_POINTER_DOWN: // последующие касания
+                if (event.getPointerCount() == 1) {
+                    firstPointBefore = new Point();
+                    firstPointBefore.x = (int) event.getX(0);
+                    firstPointBefore.y = (int) event.getY(0);
+                }
+                if (event.getPointerCount() == 2) {
+                    firstPointBefore = new Point();
+                    firstPointBefore.x = (int) event.getX(0);
+                    firstPointBefore.y = (int) event.getY(0);
+                    secondPointBefore = new Point();
+                    secondPointBefore.x = (int) event.getX(1);
+                    secondPointBefore.y = (int) event.getY(1);
+                }
+                downPI = pointerIndex;
+                break;
+
+            case MotionEvent.ACTION_UP: // прерывание последнего касания
+                inTouch = false;
+            case MotionEvent.ACTION_POINTER_UP: // прерывания касаний
+                upPI = pointerIndex;
+                break;
+
+            case MotionEvent.ACTION_MOVE: // движение
+                if (event.getPointerCount() == 1) {
+                    firstPointAfter = new Point();
+                    firstPointAfter.x = (int) event.getX(0);
+                    firstPointAfter.y = (int) event.getY(0);
+                    double deltaX = firstPointAfter.x - firstPointBefore.x;
+                    final double deltaY = firstPointAfter.y - firstPointBefore.y;
+                    angleX -= Math.toRadians(deltaX / 10);
+                    angleY += Math.toRadians(deltaY / 10);
+                    if (angleY > Math.toRadians(90)) {
+                        angleY = Math.toRadians(90);
+                    }
+                    if (angleY < Math.toRadians(-90)) {
+                        angleY = Math.toRadians(-90);
+                    }
+                    firstPointBefore.x = (int) event.getX(0);
+                    firstPointBefore.y = (int) event.getY(0);
+                }
+                if (event.getPointerCount() == 2) {
+                    firstPointAfter = new Point();
+                    secondPointAfter = new Point();
+                    firstPointAfter.x = (int) event.getX(0);
+                    firstPointAfter.y = (int) event.getY(0);
+                    secondPointAfter.x = (int) event.getX(1);
+                    secondPointAfter.y = (int) event.getY(1);
+                    double distBetwPointsAfter = MathFunctions.getDistBetwTwoPoints2D(firstPointAfter, secondPointAfter);
+                    double distBetwPointsBefore = MathFunctions.getDistBetwTwoPoints2D(firstPointBefore, secondPointBefore);
+                    firstPointBefore.x = (int) event.getX(0);
+                    firstPointBefore.y = (int) event.getY(0);
+                    secondPointBefore.x = (int) event.getX(1);
+                    secondPointBefore.y = (int) event.getY(1);
+                    this.radius += (distBetwPointsAfter - distBetwPointsBefore) / 2;
+                }
+                break;
+        }
+
+//        if (inTouch) {
+//        }
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

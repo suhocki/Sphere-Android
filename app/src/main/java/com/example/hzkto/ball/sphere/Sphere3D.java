@@ -16,26 +16,43 @@ import static com.example.hzkto.ball.system.DrawThread.center;
  */
 
 public class Sphere3D {
+//    private double angleX;
+//    private double angleY;
+//    private double angleZ;
     List<Circle3D> circles;
     List<Polygon3D> polygons3D;
     Point3D camPoint;
-    float radius;
+    double radius;
     int polygons;
 
-    public Sphere3D(float radius, float angleX, float angleY, float angleZ, Point3D lightPoint, int polygons) {
+    public Sphere3D(double radius, double angleX, double angleY, double angleZ, Point3D lightPoint, int polygons) {
         circles = new ArrayList<>();
         polygons3D = new ArrayList<>();
+//        this.angleX = angleX;
+//        this.angleY = angleY;
+//        this.angleZ = angleZ;
+        this.radius = radius;
+        if (this.radius < 10) {
+            this.radius = 10;
+        }
         this.radius = radius;
         this.polygons = polygons;
-        Update(radius, angleX, angleY, angleZ, lightPoint);
+        update(radius, angleX, angleY, angleZ, lightPoint);
     }
 
-    public void Update(float radius, float angleX, float angleY, float angleZ, Point3D lightPoint) {
+    public void update(double radius, double angleX, double angleY, double angleZ, Point3D lightPoint) {
+//        this.angleX = angleX;
+//        this.angleY = angleY;
+//        this.angleZ = angleZ;
+        this.radius = radius;
+        if (this.radius < 10) {
+            this.radius = 10;
+        }
         circles.clear();
         this.polygons3D.clear();
         this.camPoint = lightPoint;
-        float angleFor360 = angleX;
-        float step = (float) (2 * Math.PI / polygons);
+        double angleFor360 = angleX;
+        double step = 2 * Math.PI / polygons;
         do {
             circles.add(new Circle3D(center, radius, polygons, angleX, angleY, angleZ));
             angleX += step;
@@ -47,26 +64,18 @@ public class Sphere3D {
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         canvas.drawRGB(225, 225, 255);
-        paint.setStyle(Paint.Style.FILL);
-//        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setStrokeWidth(2);
-        double distBetwCamAndCenter = MathFunctions.getDistanceBetweenTwoPoints(center, camPoint);
+        double distBetwCamAndCenter = MathFunctions.getDistBetwTwoPoints3D(center, camPoint);
         double maxLigthDistance = Math.sqrt(distBetwCamAndCenter * distBetwCamAndCenter -
                 radius * radius);
-
         for (Polygon3D polygon : polygons3D) {
             polygon.getPolygonCenter();
             if (polygon.getPolygonCenter().z >= 0) {
-                final double lightCoefficient = polygon.getLightCoefficient(
-                        camPoint,
-                        maxLigthDistance
-                );
+                final double lightCoefficient = polygon.getLightCoefficient(camPoint, maxLigthDistance);
                 paint.setColor(Color.rgb(
                         (int) (255 * lightCoefficient),
                         (int) (255 * lightCoefficient),
-//                        (int) (255 * lightCoefficient))
-//                        0,255,0)
-//                        0,
                         0)
                 );
                 canvas.drawPath(polygon.getPath(), paint);
@@ -82,12 +91,11 @@ public class Sphere3D {
         for (int iCircle = 1; iCircle < circlesCount; iCircle++) {
             for (int iPoint = 1; iPoint < pointsCount; iPoint++) {
                 Polygon3D polygon = new Polygon3D();
-                if (iPoint == pointsCount / 2) {
+                if (iPoint == pointsCount / 2 ) {
                     polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint - 1));
                     polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint));
                     polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint - 1));
-                } else
-                if (iPoint == 1) {
+                } else if (iPoint == 1) {
                     polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint - 1));
                     polygon.addPoint(circles.get(iCircle - 1).getPoints().get(iPoint));
                     polygon.addPoint(circles.get(iCircle).getPoints().get(iPoint));
@@ -105,5 +113,37 @@ public class Sphere3D {
             }
         }
     }
+//
+//    public double getAngle(int type) {
+//        double angle;
+//        switch (type) {
+//            case TYPE_X:
+//                angle = Math.toDegrees(this.angleX);
+//                if (angle > 360) {
+//                    return angle -= 360;
+//                } else if (angle < 0) {
+//                    return angle += 360;
+//                }
+//                return angle;
+//            case TYPE_Y:
+//                angle = Math.toDegrees(this.angleY);
+//                if (angle > 360) {
+//                    return angle -= 360;
+//                } else if (angle < 0) {
+//                    return angle += 360;
+//                }
+//                return angle;
+//            case TYPE_Z:
+//                angle = Math.toDegrees(this.angleZ);
+//                if (angle > 360) {
+//                    return angle -= 360;
+//                } else if (angle < 0) {
+//                    return angle += 360;
+//                }
+//                return angle;
+//            default:
+//                return 0;
+//        }
+//    }
 
 }

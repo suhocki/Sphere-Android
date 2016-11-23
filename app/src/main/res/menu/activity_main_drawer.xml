@@ -1,15 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_catalog"
-            android:icon="@drawable/android"
-            android:title="123" />
-        <item
-            android:id="@+id/nav_contacts"
-            android:icon="@drawable/android"
-            android:title="123" />
+    <item
+        android:id="@+id/nav_config"
+        android:title="Конфигурация" />
+    <item
+        android:id="@+id/nav_performance"
+        android:title="Производительность" />
+    <item
+        android:id="@+id/nav_light"
+        android:title="Освещение" />
     </group>
 
+    <item android:title="Преобразования">
+        <menu>
+            <item
+                android:id="@+id/nav_move"
+                android:title="Перемещение" />
+            <item
+                android:id="@+id/nav_rotate"
+                android:title="Поворот" />
+            <item
+                android:id="@+id/nav_scale"
+                android:title="Масштабирование" />
+
+        </menu>
+    </item>
+
+    <item android:title="Проецирование">
+        <menu>
+            <item
+                android:id="@+id/nav_projection_frontal"
+                android:title="Фронтальная проекция" />
+            <item
+                android:id="@+id/nav_projection_horizontal"
+                android:title="Горизонтальная проекция" />
+            <item
+                android:id="@+id/nav_projection_profile"
+                android:title="Профильная проекция" />
+            <item
+                android:id="@+id/nav_projection_axonometric"
+                android:title="Аксонометрическая проекция" />
+            <item
+                android:id="@+id/nav_projection_oblique"
+                android:title="Косоугольная проекция" />
+            <item
+                android:id="@+id/nav_projection_perspective"
+                android:title="Перспективная проекция" />
+        </menu>
+    </item>
 </menu>

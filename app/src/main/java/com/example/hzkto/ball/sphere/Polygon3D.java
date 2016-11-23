@@ -27,9 +27,9 @@ public class Polygon3D {
 
     public Path getPath() {
         Path path = new Path();
-        path.moveTo(points.get(0).x, points.get(0).y);
+        path.moveTo((float)points.get(0).x, (float)points.get(0).y);
         for (Point3D point : points) {
-            path.lineTo(point.x, point.y);
+            path.lineTo((float)point.x, (float)point.y);
         }
         return path;
     }
