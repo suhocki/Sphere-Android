@@ -1,4 +1,4 @@
-package com.example.hzkto.ball;
+package com.example.hzkto.ball.fragments;
 
 
 import android.os.Bundle;
@@ -7,27 +7,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hzkto.ball.R;
 import com.example.hzkto.ball.system.MySurfaceView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment {
+public class SphereFragment extends Fragment {
     MySurfaceView mySurfaceView;
 
-    public MainFragment() {
+    public SphereFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.f_main, container, false);
         mySurfaceView = (MySurfaceView) view.findViewById(R.id.mySurfaceView);
         mySurfaceView.setZOrderOnTop(false);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mySurfaceView.setBundle(bundle);
+        }
         return view;
     }
-
 }

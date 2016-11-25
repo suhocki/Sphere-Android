@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.text.TextPaint;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -19,7 +20,7 @@ import android.view.WindowManager;
 
 import com.example.hzkto.ball.sphere.Point3D;
 import com.example.hzkto.ball.sphere.Sphere3D;
-import com.example.hzkto.ball.tools.MathFunctions;
+import com.example.hzkto.ball.tools.MathTools;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -28,38 +29,75 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class DrawThread extends Thread implements View.OnTouchListener, View.OnClickListener {
-    public static Point3D center;
     private final Context context;
     private boolean runFlag = false;
     private SurfaceHolder surfaceHolder;
     private long prevTime;
+    public static Point3D center;
     private double angleX;
     private double angleY;
     private double angleZ;
     private Point3D lightPoint;
-    private double radius;
+    public static double radius;
     private int polygons;
     private SensorManager sensorManager;
     private Sensor sensorAccel;
     private Sensor sensorMagnet;
     private Sphere3D sphere;
+    private boolean reflect,invisLines;
 
     public DrawThread(Context context, MySurfaceView surfaceView) {
         this.context = context;
-        center = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
-        lightPoint = new Point3D(surfaceView.screenWidth / 2, surfaceView.screenHeight / 2, 0);
+        this.surfaceHolder = surfaceView.getHolder();
+        setSphereParams(surfaceView);
+        surfaceView.setOnTouchListener(this);
+        prevTime = System.currentTimeMillis();
+//        initSensors(context);
+    }
+
+    private void setSphereParams(MySurfaceView view) {
+        center = new Point3D(view.getWidth() / 2,
+                view.getHeight() / 2,
+                0);
+        radius = StrictMath.min(center.x, center.y);
+        lightPoint = new Point3D(center.x, center.y, radius * 25);
+        angleX = 0;
+        angleY = 0;
+        angleZ = Math.toRadians(90);
+        polygons = 18;
+        reflect = true;
+        invisLines = true;
+    }
+
+    public DrawThread(Context context, MySurfaceView surfaceView, Bundle bundle) {
+        this.context = context;
+        polygons = 36;
+        parseBundle(bundle);
+
+        lightPoint = new Point3D(center.x, center.y, radius * 25);
         this.surfaceHolder = surfaceView.getHolder();
         prevTime = System.currentTimeMillis();
         angleX = 0;
         angleY = 0;
         angleZ = Math.toRadians(90);
-        polygons = 36;
         lightPoint.z = -1000;
-        radius = 500;
         surfaceView.setOnTouchListener(this);
-        initSensors(context);
+//        initSensors(context);
     }
 
+    private void parseBundle(Bundle bundle) {
+        if (bundle == null) return;
+        if (bundle.get("X") != null) {
+            center = new Point3D(bundle.getDouble("X"),
+                    bundle.getDouble("Y"),
+                    bundle.getDouble("Z"));
+            radius = bundle.getDouble("radius");
+        } else if (bundle.get("polygonsCount") != null) {
+            polygons = bundle.getInt("polygonsCount");
+            reflect = bundle.getBoolean("reflect");
+            invisLines = bundle.getBoolean("invisLines");
+        }
+    }
 
     float[] valuesAccel = new float[3];
     float[] valuesMagnet = new float[3];
@@ -154,7 +192,7 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
     @Override
     public void run() {
         Canvas canvas;
-        sphere = new Sphere3D(radius, angleX, angleY, angleZ, lightPoint, polygons);
+        sphere = new Sphere3D(center, radius, angleX, angleY, angleZ, lightPoint, polygons, reflect, invisLines);
         while (runFlag) {
             long now = System.currentTimeMillis();
             long elapsedTime = now - prevTime;
@@ -179,9 +217,9 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                         canvas.drawText(String.valueOf(format(valuesResult2)), 50, 300, paint);
 
 
-                        valuesResultTemp[0] -= valuesResult2[0];
-                        valuesResultTemp[1] -= valuesResult2[1];
-                        valuesResultTemp[2] -= valuesResult2[2];
+//                        valuesResultTemp[0] -= valuesResult2[0];
+//                        valuesResultTemp[1] -= valuesResult2[1];
+//                        valuesResultTemp[2] -= valuesResult2[2];
 //                        if (Math.abs(valuesResultTemp[0]) < 20) center.x += valuesResultTemp[0] * 5;
 //                        if (Math.abs(valuesResultTemp[1]) < 20) center.y += valuesResultTemp[1] * 5;
 //                        if (Math.abs(valuesResultTemp[2]) < 20) center.z += valuesResultTemp[2] * 5;
@@ -190,15 +228,15 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
 //                        angleZ += Math.toRadians(1);
 //                        angleY -= Math.toRadians(1);
 //                        angleX += Math.toRadians(0.2);
-                        lightPoint.x = 7000;
-                        lightPoint.y = -7000;
+                        lightPoint.x = 0;
+                        lightPoint.y = 0;
                         lightPoint.z = 7000;
 
 //                        angleX += Math.toRadians(2);
                         if (radius < 10) {
                             radius = 10;
                         }
-                        sphere.update(radius, angleX, angleY, angleZ, lightPoint);
+                        sphere.update(center, radius, angleX, angleY, angleZ, lightPoint);
                         sphere.draw(canvas);
                     }
                 }
@@ -284,8 +322,8 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                     firstPointAfter.y = (int) event.getY(0);
                     secondPointAfter.x = (int) event.getX(1);
                     secondPointAfter.y = (int) event.getY(1);
-                    double distBetwPointsAfter = MathFunctions.getDistBetwTwoPoints2D(firstPointAfter, secondPointAfter);
-                    double distBetwPointsBefore = MathFunctions.getDistBetwTwoPoints2D(firstPointBefore, secondPointBefore);
+                    double distBetwPointsAfter = MathTools.getDistBetwTwoPoints2D(firstPointAfter, secondPointAfter);
+                    double distBetwPointsBefore = MathTools.getDistBetwTwoPoints2D(firstPointBefore, secondPointBefore);
                     firstPointBefore.x = (int) event.getX(0);
                     firstPointBefore.y = (int) event.getY(0);
                     secondPointBefore.x = (int) event.getX(1);

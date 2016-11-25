@@ -5,9 +5,9 @@ import android.graphics.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.hzkto.ball.tools.MathFunctions.getLightCoeff;
-import static com.example.hzkto.ball.tools.MathFunctions.getMassCenter;
-import static com.example.hzkto.ball.tools.MathFunctions.isLightened;
+import static com.example.hzkto.ball.tools.MathTools.getLightCoeff;
+import static com.example.hzkto.ball.tools.MathTools.getMassCenter;
+import static com.example.hzkto.ball.tools.MathTools.isLightened;
 
 /**
  * Created by hzkto on 11/4/2016.

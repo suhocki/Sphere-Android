@@ -6,8 +6,8 @@ import java.util.List;
 import static com.example.hzkto.ball.Constants.TYPE_X;
 import static com.example.hzkto.ball.Constants.TYPE_Y;
 import static com.example.hzkto.ball.Constants.TYPE_Z;
-import static com.example.hzkto.ball.tools.MathFunctions.getApproxedCircle;
-import static com.example.hzkto.ball.tools.MathFunctions.rotatePoints;
+import static com.example.hzkto.ball.tools.MathTools.getApproxedCircle;
+import static com.example.hzkto.ball.tools.MathTools.rotatePoints;
 
 
 /**
@@ -19,9 +19,9 @@ public class Circle3D {
 
     public Circle3D(Point3D center, double radius, int polygons, double angleX, double angleY, double angleZ) {
         points = getApproxedCircle(center, radius, polygons);
-        rotatePoints(points, angleX, TYPE_X);
-        rotatePoints(points, angleY, TYPE_Y);
-        rotatePoints(points, angleZ, TYPE_Z);
+        rotatePoints(points, center, angleX, TYPE_X);
+        rotatePoints(points, center, angleY, TYPE_Y);
+        rotatePoints(points, center, angleZ, TYPE_Z);
     }
 
     public List<Point3D> getPoints() {

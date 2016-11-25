@@ -10,7 +10,6 @@ import java.util.List;
 import static com.example.hzkto.ball.Constants.TYPE_X;
 import static com.example.hzkto.ball.Constants.TYPE_Y;
 import static com.example.hzkto.ball.Constants.TYPE_Z;
-import static com.example.hzkto.ball.system.DrawThread.center;
 import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -19,10 +18,9 @@ import static java.lang.Math.sin;
  * Created by hzkto on 11/20/2016.
  */
 
-public class MathFunctions {
+public class MathTools {
     public static double getDistBetwTwoPoints2D(Point firstPoint, Point secondPoint) {
-        return Math.sqrt((secondPoint.x - firstPoint.x) * (secondPoint.x - firstPoint.x) +
-                (secondPoint.y - firstPoint.y) * (secondPoint.y - firstPoint.y));
+        return StrictMath.hypot((secondPoint.x - firstPoint.x), (secondPoint.y - firstPoint.y));
     }
     
     public static double getDistBetwTwoPoints3D(Point3D firstPoint, Point3D secondPoint) {
@@ -43,7 +41,7 @@ public class MathFunctions {
         return points;
     }
 
-    public static void rotatePoints(List<Point3D> points, double angle, int type) {
+    public static void rotatePoints(List<Point3D> points, Point3D center, double angle, int type) {
         if (points != null) {
             switch (type) {
                 case TYPE_X:
@@ -90,7 +88,7 @@ public class MathFunctions {
     }
 
     public static boolean isLightened(Point3D camPoint, Point3D polygonCenter, double maxLigthDistance) {
-        double distanceFromCamPoint = MathFunctions.getDistBetwTwoPoints3D(camPoint, polygonCenter);
+        double distanceFromCamPoint = MathTools.getDistBetwTwoPoints3D(camPoint, polygonCenter);
         if (distanceFromCamPoint <= maxLigthDistance) {
             return true;
         }

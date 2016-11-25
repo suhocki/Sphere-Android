@@ -1,6 +1,7 @@
 package com.example.hzkto.ball.system;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -11,20 +12,27 @@ import android.view.SurfaceView;
 
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
-    public int screenHeight;
-    public int screenWidth;
+    private Bundle bundle;
+
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
+    }
 
     public MySurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        getHolder().addCallback(this);
-        setZOrderOnTop(true);
-        screenHeight = context.getResources().getDisplayMetrics().heightPixels;
-        screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        if(!isInEditMode()) {
+            getHolder().addCallback(this);
+            setZOrderOnTop(true);
+        }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawThread = new DrawThread(getContext(), this);
+        if (bundle != null) {
+            drawThread = new DrawThread(getContext(), this, bundle);
+        } else {
+            drawThread = new DrawThread(getContext(), this);
+        }
         drawThread.setRunning(true);
         drawThread.start();
     }
