@@ -29,22 +29,22 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class DrawThread extends Thread implements View.OnTouchListener, View.OnClickListener {
+    public static double radius;
+    public static Point3D center;
+    public static double angleX, angleY, angleZ;
+    public static Point3D lightPoint;
+    public static int polygons;
+    public static boolean reflect, invisLines;
+    public static int[] color;
+
     private final Context context;
     private boolean runFlag = false;
     private SurfaceHolder surfaceHolder;
     private long prevTime;
-    public static Point3D center;
-    private double angleX;
-    private double angleY;
-    private double angleZ;
-    private Point3D lightPoint;
-    public static double radius;
-    private int polygons;
     private SensorManager sensorManager;
     private Sensor sensorAccel;
     private Sensor sensorMagnet;
     private Sphere3D sphere;
-    private boolean reflect,invisLines;
 
     public DrawThread(Context context, MySurfaceView surfaceView) {
         this.context = context;
@@ -60,18 +60,20 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                 view.getHeight() / 2,
                 0);
         radius = StrictMath.min(center.x, center.y);
-        lightPoint = new Point3D(center.x, center.y, radius * 25);
+        lightPoint = new Point3D(center.x,
+                center.y,
+                radius * 25);
         angleX = 0;
         angleY = 0;
         angleZ = Math.toRadians(90);
         polygons = 18;
+        color = new int[]{255, 255, 0};
         reflect = true;
         invisLines = true;
     }
 
     public DrawThread(Context context, MySurfaceView surfaceView, Bundle bundle) {
         this.context = context;
-        polygons = 36;
         parseBundle(bundle);
 
         lightPoint = new Point3D(center.x, center.y, radius * 25);
@@ -80,22 +82,26 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
         angleX = 0;
         angleY = 0;
         angleZ = Math.toRadians(90);
-        lightPoint.z = -1000;
         surfaceView.setOnTouchListener(this);
 //        initSensors(context);
     }
 
     private void parseBundle(Bundle bundle) {
         if (bundle == null) return;
-        if (bundle.get("X") != null) {
-            center = new Point3D(bundle.getDouble("X"),
-                    bundle.getDouble("Y"),
-                    bundle.getDouble("Z"));
+        if (bundle.get("centerX") != null) {
+            center = new Point3D(bundle.getDouble("centerX"),
+                    bundle.getDouble("centerY"),
+                    bundle.getDouble("centerZ"));
             radius = bundle.getDouble("radius");
         } else if (bundle.get("polygonsCount") != null) {
             polygons = bundle.getInt("polygonsCount");
             reflect = bundle.getBoolean("reflect");
             invisLines = bundle.getBoolean("invisLines");
+        } else if (bundle.get("lightX") != null) {
+            lightPoint = new Point3D(bundle.getDouble("lightX"),
+                    bundle.getDouble("lightY"),
+                    bundle.getDouble("lightZ"));
+            color = bundle.getIntArray("color");
         }
     }
 
@@ -192,7 +198,7 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
     @Override
     public void run() {
         Canvas canvas;
-        sphere = new Sphere3D(center, radius, angleX, angleY, angleZ, lightPoint, polygons, reflect, invisLines);
+        sphere = new Sphere3D(center, radius, angleX, angleY, angleZ, lightPoint, polygons, reflect, invisLines, color);
         while (runFlag) {
             long now = System.currentTimeMillis();
             long elapsedTime = now - prevTime;
@@ -228,9 +234,7 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
 //                        angleZ += Math.toRadians(1);
 //                        angleY -= Math.toRadians(1);
 //                        angleX += Math.toRadians(0.2);
-                        lightPoint.x = 0;
-                        lightPoint.y = 0;
-                        lightPoint.z = 7000;
+
 
 //                        angleX += Math.toRadians(2);
                         if (radius < 10) {

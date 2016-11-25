@@ -79,7 +79,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:enabled="false"
-                android:text="Удалить невидимые линии" />
+                android:text="Удалять невидимые линии" />
 
             <Button
                 android:id="@+id/f_performance_btnOk"

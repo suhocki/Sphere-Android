@@ -15,12 +15,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.hzkto.ball.fragments.ConfigFragment;
+import com.example.hzkto.ball.fragments.LightFragment;
 import com.example.hzkto.ball.fragments.PerformanceFragment;
 import com.example.hzkto.ball.fragments.SphereFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     SphereFragment sphereFragment;
     ConfigFragment configFragment;
+    LightFragment lightFragment;
     PerformanceFragment performanceFragment;
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -31,7 +33,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
         setSupportActionBar(toolbar);
-        initView();
+        initViews();
+        initEtc();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, sphereFragment)
+                .commit();
+    }
+
+    private void initEtc() {
+        sphereFragment = new SphereFragment();
+        configFragment = new ConfigFragment();
+        lightFragment = new LightFragment();
+        performanceFragment = new PerformanceFragment();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
@@ -47,26 +60,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        sphereFragment = new SphereFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, sphereFragment)
-                .commit();
     }
 
-    private void initView() {
+    private void initViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        sphereFragment = new SphereFragment();
-        configFragment = new ConfigFragment();
-        performanceFragment = new PerformanceFragment();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        closeKeyboard();
         if (id == R.id.nav_config) {
             if (!configFragment.isAdded()) {
                 getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -83,6 +87,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, performanceFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            drawer.closeDrawers();
+        }
+        if (id == R.id.nav_light) {
+            if (!lightFragment.isAdded()) {
+                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, lightFragment)
                         .addToBackStack(null)
                         .commit();
             }

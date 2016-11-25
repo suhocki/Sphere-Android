@@ -1,6 +1,8 @@
 package com.example.hzkto.ball.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,18 +16,23 @@ import android.widget.TextView;
 import com.example.hzkto.ball.R;
 import com.example.hzkto.ball.system.DrawThread;
 
+import me.priyesh.chroma.ChromaDialog;
+import me.priyesh.chroma.ColorMode;
+
+import static android.graphics.Color.YELLOW;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
- * Created by hzkto on 11/23/2016.
+ * Created by hzkto on 11/25/2016.
  */
 
-public class ConfigFragment extends Fragment {
-    Button btnOk, btnClose;
-    TextView tvX, tvY, tvZ, tvRadius, tvStandart;
+public class LightFragment extends Fragment {
+    Button btnOk, btnClose, btnColor;
+    TextView tvX, tvY, tvZ, tvStandart;
     View focusView;
+    private int color[];
 
-    public ConfigFragment() {
+    public LightFragment() {
         // Required empty public constructor
     }
 
@@ -33,7 +40,7 @@ public class ConfigFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.f_config, container, false);
+        View view = inflater.inflate(R.layout.f_light, container, false);
         initViews(view);
         setListeners();
         return view;
@@ -41,16 +48,16 @@ public class ConfigFragment extends Fragment {
 
     private void setListeners() {
         tvStandart.setOnClickListener(v -> {
-            tvRadius.setText(String.valueOf(DrawThread.radius));
-            tvX.setText(String.valueOf(DrawThread.center.x));
-            tvY.setText(String.valueOf(DrawThread.center.y));
-            tvZ.setText(String.valueOf(DrawThread.center.z));
+            tvX.setText(String.valueOf(DrawThread.lightPoint.x));
+            tvY.setText(String.valueOf(DrawThread.lightPoint.y));
+            tvZ.setText(String.valueOf(DrawThread.lightPoint.z));
+            color = new int[]{255, 255, 0};
+            btnColor.setBackground(new ColorDrawable(Color.YELLOW));
         });
         btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
-        tvRadius.setOnEditorActionListener((v, actionId, event) -> {
+        tvZ.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 closeKeyboard();
-                btnOk.callOnClick();
                 return true;
             }
             return false;
@@ -72,35 +79,45 @@ public class ConfigFragment extends Fragment {
                 focusView.requestFocus();
                 return;
             }
-            if (tvRadius.getText().toString().equals("")) {
-                focusView = tvRadius;
-                focusView.requestFocus();
-                return;
-            }
 
             Bundle args = new Bundle();
-            args.putDouble("centerX", Double.valueOf(tvX.getText().toString()));
-            args.putDouble("centerY", Double.valueOf(tvY.getText().toString()));
-            args.putDouble("centerZ", Double.valueOf(tvZ.getText().toString()));
-            args.putDouble("radius", Double.valueOf(tvRadius.getText().toString()));
+            args.putDouble("lightX", Double.valueOf(tvX.getText().toString()));
+            args.putDouble("lightY", Double.valueOf(tvY.getText().toString()));
+            args.putDouble("lightZ", Double.valueOf(tvZ.getText().toString()));
+            args.putIntArray("color", color);
             SphereFragment sphereFragment = new SphereFragment();
             sphereFragment.setArguments(args);
             getFragmentManager()
                     .beginTransaction()
                     .replace(container, sphereFragment)
                     .commit();
+            closeKeyboard();
             getActivity().getSupportFragmentManager().popBackStack();
         });
+        btnColor.setOnClickListener(v -> new ChromaDialog.Builder()
+                .initialColor(YELLOW)
+                .colorMode(ColorMode.RGB) // There's also ARGB and HSV
+                .onColorSelected(intColor -> saveColor(intColor))
+                .create()
+                .show(getFragmentManager(), "ChromaDialog"));
+    }
+
+    private void saveColor(int intColor) {
+        color = new int[3];
+        color[0] = Color.red(intColor);
+        color[1] = Color.green(intColor);
+        color[2] = Color.blue(intColor);
+        btnColor.setBackground(new ColorDrawable(intColor));
     }
 
     private void initViews(View v) {
-        btnOk = (Button) v.findViewById(R.id.f_config_btnOk);
-        btnClose = (Button) v.findViewById(R.id.f_config_btnClose);
-        tvX = (TextView) v.findViewById(R.id.f_config_centerX);
-        tvY = (TextView) v.findViewById(R.id.f_config_centerY);
-        tvZ = (TextView) v.findViewById(R.id.f_config_centerZ);
-        tvStandart = (TextView) v.findViewById(R.id.f_config_tvStandart);
-        tvRadius = (TextView) v.findViewById(R.id.f_config_radius);
+        btnOk = (Button) v.findViewById(R.id.f_light_btnOk);
+        btnClose = (Button) v.findViewById(R.id.f_light_btnClose);
+        btnColor = (Button) v.findViewById(R.id.f_light_btnColor);
+        tvX = (TextView) v.findViewById(R.id.f_light_X);
+        tvY = (TextView) v.findViewById(R.id.f_light_Y);
+        tvZ = (TextView) v.findViewById(R.id.f_light_Z);
+        tvStandart = (TextView) v.findViewById(R.id.f_light_tvStandart);
     }
 
     private void closeKeyboard() {

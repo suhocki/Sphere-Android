@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="top"
+            android:paddingTop="50dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/f_config_t1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <AutoCompleteTextView
+
+                    android:id="@+id/f_light_X"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Координата X источника света"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberSigned"
+                    android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/f_config_t2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <AutoCompleteTextView
+
+                    android:id="@+id/f_light_Y"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Координата Y источника света"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberSigned"
+                    android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/f_config_t3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/f_config_t2"
+                android:layout_marginTop="8dp">
+
+                <AutoCompleteTextView
+
+                    android:id="@+id/f_light_Z"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Координата Z источника света"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberSigned"
+                    android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/f_light_btnColor"
+                android:layout_width="match_parent"
+                android:background="@drawable/color"
+                android:layout_height="36dp"
+                android:layout_marginTop="16dp"
+                android:text="Цвет" />
+
+            <Button
+                android:id="@+id/f_light_btnOk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Применить" />
+
+            <Button
+                android:id="@+id/f_light_btnClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Назад" />
+
+            <TextView
+                android:id="@+id/f_light_tvStandart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentStart="false"
+                android:layout_marginBottom="12dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:text="Установить стандартные значения"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
