@@ -24,9 +24,7 @@ public class PerformanceFragment extends Fragment {
     TextView tvStandart, tvPolygonCount;
     SeekBar seekBar;
     Switch swReflect, swDelLines;
-    int polygonsOnCircle[] = {
-            18, 36, 54, 72, 124, 172, 212, 256, 312, 512
-    };
+    int polygonsOnCircle[] = {18, 36, 54, 72, 124, 172, 212, 256, 312, 512};
 
     public PerformanceFragment() {
         // Required empty public constructor
@@ -56,7 +54,6 @@ public class PerformanceFragment extends Fragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                 String polygonCount = String.valueOf(polygonsOnCircle[progress] * polygonsOnCircle[progress] / 2);
                 tvPolygonCount.setText(polygonCount);
             }

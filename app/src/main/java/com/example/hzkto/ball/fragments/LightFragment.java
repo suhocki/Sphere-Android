@@ -1,15 +1,15 @@
 package com.example.hzkto.ball.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,6 +20,7 @@ import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 
 import static android.graphics.Color.YELLOW;
+import static com.example.hzkto.ball.MainActivity.closeKeyboard;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
@@ -37,6 +38,7 @@ public class LightFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,13 +53,14 @@ public class LightFragment extends Fragment {
             tvX.setText(String.valueOf(DrawThread.lightPoint.x));
             tvY.setText(String.valueOf(DrawThread.lightPoint.y));
             tvZ.setText(String.valueOf(DrawThread.lightPoint.z));
-            color = new int[]{255, 255, 0};
-            btnColor.setBackground(new ColorDrawable(Color.YELLOW));
+            if (color == null) {
+                color = new int[]{255, 255, 0};
+                btnColor.setBackground(new ColorDrawable(Color.YELLOW));
+            }
         });
         btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
         tvZ.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                closeKeyboard();
                 return true;
             }
             return false;
@@ -79,7 +82,7 @@ public class LightFragment extends Fragment {
                 focusView.requestFocus();
                 return;
             }
-
+            closeKeyboard(getContext());
             Bundle args = new Bundle();
             args.putDouble("lightX", Double.valueOf(tvX.getText().toString()));
             args.putDouble("lightY", Double.valueOf(tvY.getText().toString()));
@@ -91,7 +94,6 @@ public class LightFragment extends Fragment {
                     .beginTransaction()
                     .replace(container, sphereFragment)
                     .commit();
-            closeKeyboard();
             getActivity().getSupportFragmentManager().popBackStack();
         });
         btnColor.setOnClickListener(v -> new ChromaDialog.Builder()
@@ -118,13 +120,5 @@ public class LightFragment extends Fragment {
         tvY = (TextView) v.findViewById(R.id.f_light_Y);
         tvZ = (TextView) v.findViewById(R.id.f_light_Z);
         tvStandart = (TextView) v.findViewById(R.id.f_light_tvStandart);
-    }
-
-    private void closeKeyboard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 }

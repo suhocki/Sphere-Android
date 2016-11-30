@@ -1,31 +1,30 @@
 package com.example.hzkto.ball.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.hzkto.ball.R;
 import com.example.hzkto.ball.system.DrawThread;
 
+import static com.example.hzkto.ball.MainActivity.closeKeyboard;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
  * Created by hzkto on 11/23/2016.
  */
 
-public class ConfigFragment extends Fragment {
+public class MoveFragment extends Fragment {
     Button btnOk, btnClose;
     TextView tvX, tvY, tvZ, tvRadius, tvStandart;
     View focusView;
 
-    public ConfigFragment() {
+    public MoveFragment() {
         // Required empty public constructor
     }
 
@@ -49,7 +48,6 @@ public class ConfigFragment extends Fragment {
         btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
         tvRadius.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                closeKeyboard();
                 btnOk.callOnClick();
                 return true;
             }
@@ -77,12 +75,13 @@ public class ConfigFragment extends Fragment {
                 focusView.requestFocus();
                 return;
             }
-
+            closeKeyboard(getContext());
             Bundle args = new Bundle();
             args.putDouble("centerX", Double.valueOf(tvX.getText().toString()));
             args.putDouble("centerY", Double.valueOf(tvY.getText().toString()));
             args.putDouble("centerZ", Double.valueOf(tvZ.getText().toString()));
             args.putDouble("radius", Double.valueOf(tvRadius.getText().toString()));
+
             SphereFragment sphereFragment = new SphereFragment();
             sphereFragment.setArguments(args);
             getFragmentManager()
@@ -101,13 +100,5 @@ public class ConfigFragment extends Fragment {
         tvZ = (TextView) v.findViewById(R.id.f_config_centerZ);
         tvStandart = (TextView) v.findViewById(R.id.f_config_tvStandart);
         tvRadius = (TextView) v.findViewById(R.id.f_config_radius);
-    }
-
-    private void closeKeyboard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 }

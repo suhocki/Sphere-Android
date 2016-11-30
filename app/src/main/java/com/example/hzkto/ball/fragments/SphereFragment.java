@@ -27,11 +27,11 @@ public class SphereFragment extends Fragment {
         View view = inflater.inflate(R.layout.f_main, container, false);
         mySurfaceView = (MySurfaceView) view.findViewById(R.id.mySurfaceView);
         mySurfaceView.setZOrderOnTop(false);
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mySurfaceView.setBundle(bundle);
         }
+
         return view;
     }
 }

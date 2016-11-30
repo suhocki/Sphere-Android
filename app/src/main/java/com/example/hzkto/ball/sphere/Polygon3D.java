@@ -5,8 +5,10 @@ import android.graphics.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.hzkto.ball.system.DrawThread.lightPoint;
 import static com.example.hzkto.ball.tools.MathTools.getLightCoeff;
 import static com.example.hzkto.ball.tools.MathTools.getMassCenter;
+import static com.example.hzkto.ball.tools.MathTools.getMaxLightDist;
 import static com.example.hzkto.ball.tools.MathTools.isLightened;
 
 /**
@@ -41,8 +43,8 @@ public class Polygon3D {
         return polygonCenter;
     }
 
-    public double getLightCoefficient(Point3D camPoint, double maxLigthDistance) {
-        if (!isLightened(camPoint, polygonCenter, maxLigthDistance)) {
+    public double getLightCoefficient(Point3D camPoint, Point3D center, double radius) {
+        if (!isLightened(camPoint, polygonCenter, getMaxLightDist(center, lightPoint, radius))) {
             return 0;
         }
         return getLightCoeff(points, camPoint, polygonCenter);

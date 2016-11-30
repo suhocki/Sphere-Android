@@ -7,4 +7,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sphere">Сфера</string>
     <string name="ok">Ok</string>
+    <string name="move">Перемещение</string>
+    <string name="rotate">Поворот</string>
+    <string name="scale">Масштабирование</string>
+    <string name="light">Освещение</string>
+    <string name="performance">Производительность</string>
+    <string name="projection">Проецирование</string>
 </resources>

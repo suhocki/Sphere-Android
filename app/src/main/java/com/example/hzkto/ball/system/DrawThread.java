@@ -2,15 +2,12 @@ package com.example.hzkto.ball.system;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -23,6 +20,7 @@ import com.example.hzkto.ball.sphere.Sphere3D;
 import com.example.hzkto.ball.tools.MathTools;
 
 import static android.content.Context.SENSOR_SERVICE;
+import static java.lang.Math.toRadians;
 
 /**
  * Created by hzkto on 10/26/2016.
@@ -32,6 +30,8 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
     public static double radius;
     public static Point3D center;
     public static double angleX, angleY, angleZ;
+    public static double scaleX, scaleY, scaleZ;
+//    public static double rotateX, rotateY, rotateZ;
     public static Point3D lightPoint;
     public static int polygons;
     public static boolean reflect, invisLines;
@@ -49,13 +49,13 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
     public DrawThread(Context context, MySurfaceView surfaceView) {
         this.context = context;
         this.surfaceHolder = surfaceView.getHolder();
-        setSphereParams(surfaceView);
+        setStandartParams(surfaceView);
         surfaceView.setOnTouchListener(this);
         prevTime = System.currentTimeMillis();
 //        initSensors(context);
     }
 
-    private void setSphereParams(MySurfaceView view) {
+    private void setStandartParams(MySurfaceView view) {
         center = new Point3D(view.getWidth() / 2,
                 view.getHeight() / 2,
                 0);
@@ -65,23 +65,22 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                 radius * 25);
         angleX = 0;
         angleY = 0;
-        angleZ = Math.toRadians(90);
+        angleZ = toRadians(90);
         polygons = 18;
         color = new int[]{255, 255, 0};
         reflect = true;
         invisLines = true;
+        scaleX = 1;
+        scaleY = 1;
+        scaleZ = 1;
     }
 
     public DrawThread(Context context, MySurfaceView surfaceView, Bundle bundle) {
         this.context = context;
         parseBundle(bundle);
 
-        lightPoint = new Point3D(center.x, center.y, radius * 25);
         this.surfaceHolder = surfaceView.getHolder();
         prevTime = System.currentTimeMillis();
-        angleX = 0;
-        angleY = 0;
-        angleZ = Math.toRadians(90);
         surfaceView.setOnTouchListener(this);
 //        initSensors(context);
     }
@@ -102,6 +101,14 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                     bundle.getDouble("lightY"),
                     bundle.getDouble("lightZ"));
             color = bundle.getIntArray("color");
+        } else if (bundle.get("scaleX") != null) {
+            scaleX = bundle.getDouble("scaleX");
+            scaleY = bundle.getDouble("scaleY");
+            scaleZ = bundle.getDouble("scaleZ");
+        } else if (bundle.get("rotateX") != null) {
+            angleX = toRadians(bundle.getDouble("rotateX"));
+            angleY = toRadians(bundle.getDouble("rotateY"));
+            angleZ = toRadians(bundle.getDouble("rotateZ"));
         }
     }
 
@@ -210,17 +217,18 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
+
 //                        canvas.drawColor(Color.CYAN, PorterDuff.Mode.CLEAR);
                         float[] valuesResultTemp = valuesResult2.clone();
                         getDeviceOrientation();
                         getActualDeviceOrientation();
 
-                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                        TextPaint paint = new TextPaint();
-                        paint.setTextSize(50);
-                        canvas.drawText(String.valueOf(elapsedTime), 50, 50, paint);
-                        canvas.drawText(String.valueOf(format(valuesResult)), 50, 200, paint);
-                        canvas.drawText(String.valueOf(format(valuesResult2)), 50, 300, paint);
+//                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+//                        TextPaint paint = new TextPaint();
+//                        paint.setTextSize(50);
+//                        canvas.drawText(String.valueOf(elapsedTime), 50, 50, paint);
+//                        canvas.drawText(String.valueOf(format(valuesResult)), 50, 200, paint);
+//                        canvas.drawText(String.valueOf(format(valuesResult2)), 50, 300, paint);
 
 
 //                        valuesResultTemp[0] -= valuesResult2[0];
@@ -240,7 +248,9 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                         if (radius < 10) {
                             radius = 10;
                         }
-                        sphere.update(center, radius, angleX, angleY, angleZ, lightPoint);
+                        sphere.update(center, radius, angleX, angleY, angleZ, lightPoint, scaleX, scaleY, scaleZ);
+                        canvas.drawRGB(255, 255, 255);
+
                         sphere.draw(canvas);
                     }
                 }
@@ -308,13 +318,18 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                     firstPointAfter.y = (int) event.getY(0);
                     double deltaX = firstPointAfter.x - firstPointBefore.x;
                     final double deltaY = firstPointAfter.y - firstPointBefore.y;
-                    angleX -= Math.toRadians(deltaX / 10);
-                    angleY += Math.toRadians(deltaY / 10);
-                    if (angleY > Math.toRadians(90)) {
-                        angleY = Math.toRadians(90);
-                    }
-                    if (angleY < Math.toRadians(-90)) {
-                        angleY = Math.toRadians(-90);
+                    int deltaMax = 500;
+                    int deltaMin = -500;
+                    if (!(deltaX > deltaMax || deltaY > deltaMax) &&
+                            (!(deltaX < deltaMin || deltaY < deltaMin))) {
+                        angleX -= toRadians(deltaX / 10);
+                        angleY += toRadians(deltaY / 10);
+                        if (angleY > toRadians(90)) {
+                            angleY = toRadians(90);
+                        }
+                        if (angleY < toRadians(-90)) {
+                            angleY = toRadians(-90);
+                        }
                     }
                     firstPointBefore.x = (int) event.getX(0);
                     firstPointBefore.y = (int) event.getY(0);

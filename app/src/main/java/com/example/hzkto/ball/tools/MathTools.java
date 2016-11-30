@@ -118,4 +118,9 @@ public class MathTools {
                 Math.sqrt(A * A + B * B + C * C) /
                 Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)));
     }
+
+    public static double getMaxLightDist(Point3D center, Point3D lightPoint, double radius) {
+        double distBetwCamAndCenter = MathTools.getDistBetwTwoPoints3D(center, lightPoint);
+        return Math.sqrt(distBetwCamAndCenter * distBetwCamAndCenter - radius * radius);
+    }
 }
