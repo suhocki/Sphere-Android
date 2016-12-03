@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.hzkto.ball.R;
 
+import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
@@ -35,6 +36,7 @@ public class PerformanceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.f_performance, container, false);
+        setToolbarTitle(getActivity(), R.string.performance);
         initViews(view);
         setListeners();
         return view;
@@ -80,13 +82,16 @@ public class PerformanceFragment extends Fragment {
             }
         });
         tvStandart.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) seekBar.setProgress(0, false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) seekBar.setProgress(0, true);
             else seekBar.setProgress(0);
             swDelLines.setEnabled(false);
             swDelLines.setChecked(true);
             swReflect.setChecked(true);
         });
-        btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
+        btnClose.setOnClickListener(v -> {
+            setToolbarTitle(getActivity(), R.string.sphere);
+            getActivity().getSupportFragmentManager().popBackStack();
+        });
         btnOk.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putInt("polygonsCount", polygonsOnCircle[seekBar.getProgress()]);

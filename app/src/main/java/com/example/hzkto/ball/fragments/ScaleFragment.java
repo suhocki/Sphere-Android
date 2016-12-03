@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.hzkto.ball.R;
 
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
+import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
@@ -31,6 +32,7 @@ public class ScaleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.f_scale, container, false);
+        setToolbarTitle(getActivity(), R.string.scale);
         initViews(view);
         setListeners();
         return view;
@@ -42,7 +44,10 @@ public class ScaleFragment extends Fragment {
             tvY.setText("1");
             tvZ.setText("1");
         });
-        btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
+        btnClose.setOnClickListener(v -> {
+            setToolbarTitle(getActivity(), R.string.sphere);
+            getActivity().getSupportFragmentManager().popBackStack();
+        });
         btnOk.setOnClickListener(v -> {
             focusView = null;
             if (tvX.getText().toString().equals("")) {

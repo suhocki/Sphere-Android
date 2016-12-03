@@ -17,11 +17,9 @@ import static com.example.hzkto.ball.tools.MathTools.rotatePoints;
 public class Circle3D {
     List<Point3D> points;
 
-    public Circle3D(Point3D center, double radius, int polygons, double angleX, double angleY, double angleZ) {
+    public Circle3D(Point3D center, double radius, int polygons, double angleX) {
         points = getApproxedCircle(center, radius, polygons);
         rotatePoints(points, center, angleX, TYPE_X);
-        rotatePoints(points, center, angleY, TYPE_Y);
-        rotatePoints(points, center, angleZ, TYPE_Z);
     }
 
     public List<Point3D> getPoints() {

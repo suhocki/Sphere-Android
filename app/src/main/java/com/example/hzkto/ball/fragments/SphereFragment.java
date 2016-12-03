@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.example.hzkto.ball.R;
 import com.example.hzkto.ball.system.MySurfaceView;
 
+import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,4 +36,12 @@ public class SphereFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setToolbarTitle(getActivity(), R.string.sphere);
+    }
+
+
 }

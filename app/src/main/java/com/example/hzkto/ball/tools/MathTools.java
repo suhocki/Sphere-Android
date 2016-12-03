@@ -3,6 +3,7 @@ package com.example.hzkto.ball.tools;
 import android.graphics.Point;
 
 import com.example.hzkto.ball.sphere.Point3D;
+import com.example.hzkto.ball.sphere.Polygon3D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class MathTools {
     public static double getDistBetwTwoPoints2D(Point firstPoint, Point secondPoint) {
         return StrictMath.hypot((secondPoint.x - firstPoint.x), (secondPoint.y - firstPoint.y));
     }
-    
+
     public static double getDistBetwTwoPoints3D(Point3D firstPoint, Point3D secondPoint) {
         return Math.sqrt((secondPoint.x - firstPoint.x) * (secondPoint.x - firstPoint.x) +
                 (secondPoint.y - firstPoint.y) * (secondPoint.y - firstPoint.y) +
@@ -122,5 +123,15 @@ public class MathTools {
     public static double getMaxLightDist(Point3D center, Point3D lightPoint, double radius) {
         double distBetwCamAndCenter = MathTools.getDistBetwTwoPoints3D(center, lightPoint);
         return Math.sqrt(distBetwCamAndCenter * distBetwCamAndCenter - radius * radius);
+    }
+
+    public static double getDotProduct(Vector v1, Vector v2) {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
+
+    public static Vector getCrossProduct(Vector v1, Vector v2) {
+        return new Vector(v1.y * v2.z - v1.z * v2.y,
+                v1.z * v2.x - v1.x * v2.z,
+                v1.x * v2.y - v1.y * v2.x);
     }
 }

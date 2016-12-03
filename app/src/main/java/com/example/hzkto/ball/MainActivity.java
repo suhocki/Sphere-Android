@@ -31,14 +31,8 @@ import static com.example.hzkto.ball.R.id.nav_rotate;
 import static com.example.hzkto.ball.R.id.nav_scale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    LightFragment lightFragment;
-    MoveFragment moveFragment;
-    PerformanceFragment performanceFragment;
-    RotateFragment rotateFragment;
-    ScaleFragment scaleFragment;
-    SphereFragment sphereFragment;
-
     public static Toolbar toolbar;
+    SphereFragment sphereFragment;
     DrawerLayout drawer;
     NavigationView navigationView;
     Context context = this;
@@ -50,6 +44,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         initViews();
         initEtc();
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment fragment = getFragment();
+                setTitleFromFragment(fragment);
+            }
+
+            private void setTitleFromFragment(Fragment fragment) {
+
+            }
+        });
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, new SphereFragment())
                 .commit();
@@ -89,23 +94,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case nav_move:
-                toolbar.setTitle(R.string.move);
                 showFragment(new MoveFragment());
                 return true;
             case nav_performance:
-                toolbar.setTitle(R.string.performance);
                 showFragment(new PerformanceFragment());
                 return true;
             case nav_light:
-                toolbar.setTitle(R.string.light);
                 showFragment(new LightFragment());
                 return true;
             case nav_scale:
-                toolbar.setTitle(R.string.scale);
                 showFragment(new ScaleFragment());
                 return true;
             case nav_rotate:
-                toolbar.setTitle(R.string.rotate);
                 showFragment(new RotateFragment());
                 return true;
             default:
@@ -147,10 +147,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            toolbar.setTitle(R.string.sphere);
+        }
         if (this.drawer.isDrawerOpen(GravityCompat.START)) {
             this.drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+    public static void setToolbarTitle(Activity activity, int light) {
+        Toolbar toolbarTitle = (Toolbar) activity.findViewById(R.id.toolbar);
+        toolbarTitle.setTitle(activity.getResources().getString(light));
+    }
+
+    private Fragment getFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        return fragment;
     }
 }

@@ -13,6 +13,7 @@ import com.example.hzkto.ball.R;
 import com.example.hzkto.ball.system.DrawThread;
 
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
+import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
@@ -32,7 +33,8 @@ public class MoveFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.f_config, container, false);
+        View view = inflater.inflate(R.layout.f_move, container, false);
+        setToolbarTitle(getActivity(), R.string.move);
         initViews(view);
         setListeners();
         return view;
@@ -45,7 +47,10 @@ public class MoveFragment extends Fragment {
             tvY.setText(String.valueOf(DrawThread.center.y));
             tvZ.setText(String.valueOf(DrawThread.center.z));
         });
-        btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
+        btnClose.setOnClickListener(v -> {
+            setToolbarTitle(getActivity(), R.string.sphere);
+            getActivity().getSupportFragmentManager().popBackStack();
+        });
         tvRadius.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 btnOk.callOnClick();

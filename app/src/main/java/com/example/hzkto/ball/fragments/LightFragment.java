@@ -2,9 +2,7 @@ package com.example.hzkto.ball.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +19,7 @@ import me.priyesh.chroma.ColorMode;
 
 import static android.graphics.Color.YELLOW;
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
+import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
 
 /**
@@ -38,15 +37,16 @@ public class LightFragment extends Fragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.f_light, container, false);
+        setToolbarTitle(getActivity(), R.string.light);
         initViews(view);
         setListeners();
         return view;
     }
+
 
     private void setListeners() {
         tvStandart.setOnClickListener(v -> {
@@ -58,7 +58,10 @@ public class LightFragment extends Fragment {
                 btnColor.setBackground(new ColorDrawable(Color.YELLOW));
             }
         });
-        btnClose.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
+        btnClose.setOnClickListener(v -> {
+            setToolbarTitle(getActivity(), R.string.sphere);
+            getActivity().getSupportFragmentManager().popBackStack();
+        });
         tvZ.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 return true;
