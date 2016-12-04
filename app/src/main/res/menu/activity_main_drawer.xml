@@ -24,6 +24,6 @@
         <item
             android:id="@+id/nav_projection"
             android:icon="@drawable/options"
-            android:title="@string/projection" />
+            android:title="@string/projections" />
     </group>
 </menu>

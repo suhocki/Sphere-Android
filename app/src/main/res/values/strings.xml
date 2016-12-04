@@ -12,5 +12,5 @@
     <string name="scale">Масштабирование</string>
     <string name="light">Освещение</string>
     <string name="performance">Производительность</string>
-    <string name="projection">Проецирование</string>
+    <string name="projections">Проекции</string>
 </resources>

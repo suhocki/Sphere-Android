@@ -20,7 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.hzkto.ball.fragments.LightFragment;
 import com.example.hzkto.ball.fragments.MoveFragment;
 import com.example.hzkto.ball.fragments.PerformanceFragment;
-import com.example.hzkto.ball.fragments.ProjectionFragment;
+import com.example.hzkto.ball.fragments.Projection1Fragment;
 import com.example.hzkto.ball.fragments.RotateFragment;
 import com.example.hzkto.ball.fragments.ScaleFragment;
 import com.example.hzkto.ball.fragments.SphereFragment;
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showFragment(new RotateFragment());
                 return true;
             case nav_projection:
-                showFragment(new ProjectionFragment());
+                showFragment(new Projection1Fragment());
                 return true;
             default:
                 return false;
