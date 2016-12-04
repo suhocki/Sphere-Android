@@ -7,7 +7,7 @@
 
 
     <com.example.hzkto.ball.system.MySurfaceView
-        android:id="@+id/mySurfaceView"
+        android:id="@+id/f_sphere_svFrontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

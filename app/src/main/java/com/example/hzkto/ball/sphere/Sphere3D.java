@@ -29,6 +29,7 @@ public class Sphere3D {
     private boolean scale = true;
     double scaleX, scaleY, scaleZ;
     private double angleX, angleY, angleZ;
+    private boolean needScale;
 
     public Sphere3D(Point3D center, double radius, double angleX,
                     double angleY, double angleZ, Point3D lightPoint,
@@ -57,21 +58,21 @@ public class Sphere3D {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
         this.scaleZ = scaleZ;
+        this.needScale = true;
     }
 
     public void draw(Canvas canvas) {
         fillCircles();
-        changeScale(circles);
+        if (needScale) {
+            changeScale(circles);
+        }
         rotateCircles(circles);
         fillPolygons();
-//        changeScale(polygons3D);
-//        rotatePolygons(polygons3D);
         Paint paint = getPaint();
         for (Polygon3D polygon : polygons3D) {
             if (invisLines) {
                 if (polygon.isVisible) {
                     if (reflect) {
-//                    if (false) {
                         final double lightCoefficient = polygon.getLightCoefficient(lightPoint, center, radius);
                         paint.setColor(Color.rgb(
                                 (int) (color[0] * lightCoefficient),
@@ -85,22 +86,6 @@ public class Sphere3D {
                 }
             } else {
                 canvas.drawPath(polygon.getPath(), paint);
-            }
-        }
-    }
-
-    private void changeScale2(List<Polygon3D> polygons) {
-        for (Polygon3D polygon : polygons) {
-            for (Point3D point3D : polygon.points) {
-                point3D.x -= center.x;
-                point3D.y -= center.y;
-                point3D.z -= center.z;
-                point3D.x *= scaleX;
-                point3D.y *= scaleY;
-                point3D.z *= scaleZ;
-                point3D.x += center.x;
-                point3D.y += center.y;
-                point3D.z += center.z;
             }
         }
     }
@@ -171,14 +156,6 @@ public class Sphere3D {
             buffX += step;
         } while (buffX < angleFor360 + Math.PI);
         circles.add(new Circle3D(center, radius, polygons, buffX));
-    }
-
-    private void rotatePolygons(List<Polygon3D> polygons) {
-        for (Polygon3D polygon : polygons) {
-            rotatePoints(polygon.points, center, angleX, TYPE_X);
-            rotatePoints(polygon.points, center, angleY, TYPE_Y);
-            rotatePoints(polygon.points, center, angleZ, TYPE_Z);
-        }
     }
 
     private void rotateCircles(List<Circle3D> circles) {

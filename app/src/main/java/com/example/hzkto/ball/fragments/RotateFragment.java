@@ -39,44 +39,59 @@ public class RotateFragment extends Fragment {
     }
 
     private void setListeners() {
-        tvStandart.setOnClickListener(v -> {
-            tvX.setText("0");
-            tvY.setText("0");
-            tvZ.setText("90");
-        });
-        btnClose.setOnClickListener(v -> {
-            setToolbarTitle(getActivity(), R.string.sphere);
-            getActivity().getSupportFragmentManager().popBackStack();
-        });
-        btnOk.setOnClickListener(v -> {
-            focusView = null;
-            if (tvX.getText().toString().equals("")) {
-                focusView = tvX;
-                focusView.requestFocus();
-                return;
+        tvStandart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    tvX.setText("0");
+                    tvY.setText("0");
+                    tvZ.setText("90");
+                }
             }
-            if (tvY.getText().toString().equals("")) {
-                focusView = tvY;
-                focusView.requestFocus();
-                return;
+        } );
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    setToolbarTitle(getActivity(), R.string.sphere);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
-            if (tvZ.getText().toString().equals("")) {
-                focusView = tvZ;
-                focusView.requestFocus();
-                return;
+        } );
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    focusView = null;
+                    if (tvX.getText().toString().equals("")) {
+                        focusView = tvX;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvY.getText().toString().equals("")) {
+                        focusView = tvY;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvZ.getText().toString().equals("")) {
+                        focusView = tvZ;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    closeKeyboard(getContext());
+                    Bundle args = new Bundle();
+                    args.putDouble("rotateX", Double.valueOf(tvX.getText().toString()));
+                    args.putDouble("rotateY", Double.valueOf(tvY.getText().toString()));
+                    args.putDouble("rotateZ", Double.valueOf(tvZ.getText().toString()));
+                    SphereFragment sphereFragment = new SphereFragment();
+                    sphereFragment.setArguments(args);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(container, sphereFragment)
+                            .commit();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
-            closeKeyboard(getContext());
-            Bundle args = new Bundle();
-            args.putDouble("rotateX", Double.valueOf(tvX.getText().toString()));
-            args.putDouble("rotateY", Double.valueOf(tvY.getText().toString()));
-            args.putDouble("rotateZ", Double.valueOf(tvZ.getText().toString()));
-            SphereFragment sphereFragment = new SphereFragment();
-            sphereFragment.setArguments(args);
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(container, sphereFragment)
-                    .commit();
-            getActivity().getSupportFragmentManager().popBackStack();
         });
     }
 

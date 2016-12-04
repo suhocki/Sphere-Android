@@ -2,6 +2,7 @@ package com.example.hzkto.ball.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,60 +42,78 @@ public class MoveFragment extends Fragment {
     }
 
     private void setListeners() {
-        tvStandart.setOnClickListener(v -> {
-            tvRadius.setText(String.valueOf(DrawThread.radius));
-            tvX.setText(String.valueOf(DrawThread.center.x));
-            tvY.setText(String.valueOf(DrawThread.center.y));
-            tvZ.setText(String.valueOf(DrawThread.center.z));
-        });
-        btnClose.setOnClickListener(v -> {
-            setToolbarTitle(getActivity(), R.string.sphere);
-            getActivity().getSupportFragmentManager().popBackStack();
-        });
-        tvRadius.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                btnOk.callOnClick();
-                return true;
+        tvStandart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                                    tvRadius.setText(String.valueOf(DrawThread.radius));
+                    tvX.setText(String.valueOf(DrawThread.center.x));
+                    tvY.setText(String.valueOf(DrawThread.center.y));
+                    tvZ.setText(String.valueOf(DrawThread.center.z));
             }
-            return false;
-        });
-        btnOk.setOnClickListener(v -> {
-            focusView = null;
-            if (tvX.getText().toString().equals("")) {
-                focusView = tvX;
-                focusView.requestFocus();
-                return;
+        } );
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    setToolbarTitle(getActivity(), R.string.sphere);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
-            if (tvY.getText().toString().equals("")) {
-                focusView = tvY;
-                focusView.requestFocus();
-                return;
+        } );
+        tvRadius.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        btnOk.callOnClick();
+                        return true;
+                    }
+                    return false;
+                }
             }
-            if (tvZ.getText().toString().equals("")) {
-                focusView = tvZ;
-                focusView.requestFocus();
-                return;
-            }
-            if (tvRadius.getText().toString().equals("")) {
-                focusView = tvRadius;
-                focusView.requestFocus();
-                return;
-            }
-            closeKeyboard(getContext());
-            Bundle args = new Bundle();
-            args.putDouble("centerX", Double.valueOf(tvX.getText().toString()));
-            args.putDouble("centerY", Double.valueOf(tvY.getText().toString()));
-            args.putDouble("centerZ", Double.valueOf(tvZ.getText().toString()));
-            args.putDouble("radius", Double.valueOf(tvRadius.getText().toString()));
+        } );
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    focusView = null;
+                    if (tvX.getText().toString().equals("")) {
+                        focusView = tvX;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvY.getText().toString().equals("")) {
+                        focusView = tvY;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvZ.getText().toString().equals("")) {
+                        focusView = tvZ;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvRadius.getText().toString().equals("")) {
+                        focusView = tvRadius;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    closeKeyboard(getContext());
+                    Bundle args = new Bundle();
+                    args.putDouble("centerX", Double.valueOf(tvX.getText().toString()));
+                    args.putDouble("centerY", Double.valueOf(tvY.getText().toString()));
+                    args.putDouble("centerZ", Double.valueOf(tvZ.getText().toString()));
+                    args.putDouble("radius", Double.valueOf(tvRadius.getText().toString()));
 
-            SphereFragment sphereFragment = new SphereFragment();
-            sphereFragment.setArguments(args);
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(container, sphereFragment)
-                    .commit();
-            getActivity().getSupportFragmentManager().popBackStack();
-        });
+                    SphereFragment sphereFragment = new SphereFragment();
+                    sphereFragment.setArguments(args);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(container, sphereFragment)
+                            .commit();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        } );
     }
 
     private void initViews(View v) {

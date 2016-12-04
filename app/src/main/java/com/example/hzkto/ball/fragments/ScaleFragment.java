@@ -39,45 +39,60 @@ public class ScaleFragment extends Fragment {
     }
 
     private void setListeners() {
-        tvStandart.setOnClickListener(v -> {
-            tvX.setText("1");
-            tvY.setText("1");
-            tvZ.setText("1");
-        });
-        btnClose.setOnClickListener(v -> {
-            setToolbarTitle(getActivity(), R.string.sphere);
-            getActivity().getSupportFragmentManager().popBackStack();
-        });
-        btnOk.setOnClickListener(v -> {
-            focusView = null;
-            if (tvX.getText().toString().equals("")) {
-                focusView = tvX;
-                focusView.requestFocus();
-                return;
+        tvStandart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    tvX.setText("1");
+                    tvY.setText("1");
+                    tvZ.setText("1");
+                }
             }
-            if (tvY.getText().toString().equals("")) {
-                focusView = tvY;
-                focusView.requestFocus();
-                return;
-            }
-            if (tvZ.getText().toString().equals("")) {
-                focusView = tvZ;
-                focusView.requestFocus();
-                return;
-            }
-            closeKeyboard(getContext());
-            Bundle args = new Bundle();
-            args.putDouble("scaleX", Double.valueOf(tvX.getText().toString()));
-            args.putDouble("scaleY", Double.valueOf(tvY.getText().toString()));
-            args.putDouble("scaleZ", Double.valueOf(tvZ.getText().toString()));
-            SphereFragment sphereFragment = new SphereFragment();
-            sphereFragment.setArguments(args);
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(container, sphereFragment)
-                    .commit();
-            getActivity().getSupportFragmentManager().popBackStack();
         });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    setToolbarTitle(getActivity(), R.string.sphere);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        } );
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    focusView = null;
+                    if (tvX.getText().toString().equals("")) {
+                        focusView = tvX;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvY.getText().toString().equals("")) {
+                        focusView = tvY;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    if (tvZ.getText().toString().equals("")) {
+                        focusView = tvZ;
+                        focusView.requestFocus();
+                        return;
+                    }
+                    closeKeyboard(getContext());
+                    Bundle args = new Bundle();
+                    args.putDouble("scaleX", Double.valueOf(tvX.getText().toString()));
+                    args.putDouble("scaleY", Double.valueOf(tvY.getText().toString()));
+                    args.putDouble("scaleZ", Double.valueOf(tvZ.getText().toString()));
+                    SphereFragment sphereFragment = new SphereFragment();
+                    sphereFragment.setArguments(args);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(container, sphereFragment)
+                            .commit();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        } );
     }
 
     private void initViews(View v) {

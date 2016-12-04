@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.hzkto.ball.fragments.LightFragment;
 import com.example.hzkto.ball.fragments.MoveFragment;
 import com.example.hzkto.ball.fragments.PerformanceFragment;
+import com.example.hzkto.ball.fragments.ProjectionFragment;
 import com.example.hzkto.ball.fragments.RotateFragment;
 import com.example.hzkto.ball.fragments.ScaleFragment;
 import com.example.hzkto.ball.fragments.SphereFragment;
@@ -27,6 +28,7 @@ import com.example.hzkto.ball.fragments.SphereFragment;
 import static com.example.hzkto.ball.R.id.nav_light;
 import static com.example.hzkto.ball.R.id.nav_move;
 import static com.example.hzkto.ball.R.id.nav_performance;
+import static com.example.hzkto.ball.R.id.nav_projection;
 import static com.example.hzkto.ball.R.id.nav_rotate;
 import static com.example.hzkto.ball.R.id.nav_scale;
 
@@ -44,17 +46,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         initViews();
         initEtc();
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                Fragment fragment = getFragment();
-                setTitleFromFragment(fragment);
-            }
-
-            private void setTitleFromFragment(Fragment fragment) {
-
-            }
-        });
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, new SphereFragment())
                 .commit();
@@ -68,19 +59,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerStateChanged(int newState) {
                 super.onDrawerStateChanged(newState);
-                new Thread(() -> {
-                    closeKeyboard(context);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        closeKeyboard(context);
+                    }
                 }).start();
             }
         };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        getFragmentManager().addOnBackStackChangedListener(() -> {
-            if (sphereFragment.isVisible()) {
-                toolbar.setTitle(R.string.sphere);
+        getFragmentManager().addOnBackStackChangedListener(new android.app.FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (sphereFragment.isVisible()) {
+                    toolbar.setTitle(R.string.sphere);
+                }
             }
-
         });
     }
 
@@ -107,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case nav_rotate:
                 showFragment(new RotateFragment());
+                return true;
+            case nav_projection:
+                showFragment(new ProjectionFragment());
                 return true;
             default:
                 return false;
@@ -160,10 +160,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static void setToolbarTitle(Activity activity, int light) {
         Toolbar toolbarTitle = (Toolbar) activity.findViewById(R.id.toolbar);
         toolbarTitle.setTitle(activity.getResources().getString(light));
-    }
-
-    private Fragment getFragment() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
-        return fragment;
     }
 }

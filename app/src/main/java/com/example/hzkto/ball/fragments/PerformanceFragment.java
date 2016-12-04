@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -70,41 +71,64 @@ public class PerformanceFragment extends Fragment {
 
             }
         });
-        swDelLines.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        swDelLines.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-        });
-        swReflect.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                swDelLines.setChecked(true);
-                swDelLines.setEnabled(false);
-            } else {
-                swDelLines.setEnabled(true);
             }
         });
-        tvStandart.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) seekBar.setProgress(0, true);
-            else seekBar.setProgress(0);
-            swDelLines.setEnabled(false);
-            swDelLines.setChecked(true);
-            swReflect.setChecked(true);
+        swReflect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                {
+                    if (isChecked) {
+                        swDelLines.setChecked(true);
+                        swDelLines.setEnabled(false);
+                    } else {
+                        swDelLines.setEnabled(true);
+                    }
+                }
+            }
         });
-        btnClose.setOnClickListener(v -> {
-            setToolbarTitle(getActivity(), R.string.sphere);
-            getActivity().getSupportFragmentManager().popBackStack();
+        tvStandart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) seekBar.setProgress(0, true);
+                    else seekBar.setProgress(0);
+                    swDelLines.setEnabled(false);
+                    swDelLines.setChecked(true);
+                    swReflect.setChecked(true);
+                }
+            }
         });
-        btnOk.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putInt("polygonsCount", polygonsOnCircle[seekBar.getProgress()]);
-            args.putBoolean("reflect", swReflect.isChecked());
-            args.putBoolean("invisLines", swDelLines.isChecked());
-            SphereFragment sphereFragment = new SphereFragment();
-            sphereFragment.setArguments(args);
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(container, sphereFragment)
-                    .commit();
-            getActivity().getSupportFragmentManager().popBackStack();
-        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    setToolbarTitle(getActivity(), R.string.sphere);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        } );
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    Bundle args = new Bundle();
+                    args.putInt("polygonsCount", polygonsOnCircle[seekBar.getProgress()]);
+                    args.putBoolean("reflect", swReflect.isChecked());
+                    args.putBoolean("invisLines", swDelLines.isChecked());
+                    SphereFragment sphereFragment = new SphereFragment();
+                    sphereFragment.setArguments(args);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(container, sphereFragment)
+                            .commit();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        } );
     }
 
 }

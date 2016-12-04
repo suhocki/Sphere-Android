@@ -26,8 +26,8 @@ public class SphereFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.f_main, container, false);
-        mySurfaceView = (MySurfaceView) view.findViewById(R.id.mySurfaceView);
+        View view = inflater.inflate(R.layout.f_sphere, container, false);
+        mySurfaceView = (MySurfaceView) view.findViewById(R.id.f_sphere_svFrontal);
         mySurfaceView.setZOrderOnTop(false);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
