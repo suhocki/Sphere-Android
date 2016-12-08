@@ -26,10 +26,10 @@ public class Sphere3D {
     int polygons;
     int color[];
     boolean reflect, invisLines;
-    private boolean scale = true;
+    boolean scale = true;
     double scaleX, scaleY, scaleZ;
-    private double angleX, angleY, angleZ;
-    private boolean needScale;
+    double angleX, angleY, angleZ;
+    boolean needScale;
 
     public Sphere3D(Point3D center, double radius, double angleX,
                     double angleY, double angleZ, Point3D lightPoint,
@@ -73,11 +73,11 @@ public class Sphere3D {
             if (invisLines) {
                 if (polygon.isVisible) {
                     if (reflect) {
-                        final double lightCoefficient = polygon.getLightCoefficient(lightPoint, center, radius);
+//                        final double lightCoefficient = polygon.getLightCoefficient(lightPoint, center, radius);
                         paint.setColor(Color.rgb(
-                                (int) (color[0] * lightCoefficient),
-                                (int) (color[1] * lightCoefficient),
-                                (int) (color[2] * lightCoefficient))
+                                (int) (color[0] * polygon.lightCoefficient),
+                                (int) (color[1] * polygon.lightCoefficient),
+                                (int) (color[2] * polygon.lightCoefficient))
                         );
                         canvas.drawPath(polygon.getPath(), paint);
                     } else {

@@ -1,9 +1,12 @@
 package com.example.hzkto.ball.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -21,7 +24,7 @@ import static com.example.hzkto.ball.R.id.container;
  * Created by hzkto on 11/23/2016.
  */
 
-public class MoveFragment extends Fragment {
+public class MoveFragment extends MyFragment {
     Button btnOk, btnClose;
     TextView tvX, tvY, tvZ, tvRadius, tvStandart;
     View focusView;
@@ -29,7 +32,6 @@ public class MoveFragment extends Fragment {
     public MoveFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,12 +47,12 @@ public class MoveFragment extends Fragment {
         tvStandart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                                    tvRadius.setText(String.valueOf(DrawThread.radius));
-                    tvX.setText(String.valueOf(DrawThread.center.x));
-                    tvY.setText(String.valueOf(DrawThread.center.y));
-                    tvZ.setText(String.valueOf(DrawThread.center.z));
+                tvRadius.setText(String.valueOf(DrawThread.radius));
+                tvX.setText(String.valueOf(DrawThread.center.x));
+                tvY.setText(String.valueOf(DrawThread.center.y));
+                tvZ.setText(String.valueOf(DrawThread.center.z));
             }
-        } );
+        });
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +61,7 @@ public class MoveFragment extends Fragment {
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
             }
-        } );
+        });
         tvRadius.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -71,7 +73,7 @@ public class MoveFragment extends Fragment {
                     return false;
                 }
             }
-        } );
+        });
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +115,7 @@ public class MoveFragment extends Fragment {
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
             }
-        } );
+        });
     }
 
     private void initViews(View v) {

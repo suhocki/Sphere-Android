@@ -18,7 +18,7 @@ import static com.example.hzkto.ball.R.id.container;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ScaleFragment extends Fragment {
+public class ScaleFragment extends MyFragment {
     Button btnOk, btnClose;
     TextView tvX, tvY, tvZ, tvStandart;
     View focusView;

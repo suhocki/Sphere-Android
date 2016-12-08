@@ -4,9 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:icon="@android:drawable/ic_dialog_info"
-        android:id="@+id/action_info"
-        android:orderInCategory="100"
-        android:title="Справка"
-        app:showAsAction="always" />
+        android:icon="@drawable/options"
+        android:id="@+id/action_projections"
+        android:orderInCategory="1"
+        android:title="Проекции"
+        app:showAsAction="ifRoom" />
+    <item
+        android:icon="@drawable/refresh"
+        android:id="@+id/action_reset"
+        android:orderInCategory="2"
+        android:title="Сброс"
+        app:showAsAction="ifRoom" />
 </menu>

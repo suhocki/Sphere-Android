@@ -20,6 +20,9 @@ import com.example.hzkto.ball.sphere.Sphere3D;
 import com.example.hzkto.ball.tools.MathTools;
 
 import static android.content.Context.SENSOR_SERVICE;
+import static com.example.hzkto.ball.tools.SystemTools.getStandartLightPoint;
+import static com.example.hzkto.ball.tools.SystemTools.getStandartRadius;
+import static com.example.hzkto.ball.tools.SystemTools.getViewCenter;
 import static java.lang.Math.toRadians;
 
 /**
@@ -31,7 +34,6 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
     public static Point3D center;
     public static double angleX, angleY, angleZ;
     public static double scaleX, scaleY, scaleZ;
-//    public static double rotateX, rotateY, rotateZ;
     public static Point3D lightPoint;
     public static int polygons;
     public static boolean reflect, invisLines;
@@ -56,13 +58,10 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
     }
 
     private void setStandartParams(MySurfaceView view) {
-        center = new Point3D(view.getWidth() / 2,
-                view.getHeight() / 2,
-                0);
-        radius = StrictMath.min(center.x, center.y);
-        lightPoint = new Point3D(center.x,
-                center.y,
-                radius * 25);
+        center = getViewCenter(view);
+        radius = getStandartRadius(center);
+        lightPoint = getStandartLightPoint(center);
+
         angleX = 0;
         angleY = 0;
         angleZ = toRadians(90);

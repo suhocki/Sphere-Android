@@ -21,12 +21,12 @@ import static com.example.hzkto.ball.R.id.container;
  * Created by hzkto on 11/24/2016.
  */
 
-public class PerformanceFragment extends Fragment {
+public class PerformanceFragment extends MyFragment {
     Button btnOk, btnClose;
     TextView tvStandart, tvPolygonCount;
     SeekBar seekBar;
     Switch swReflect, swDelLines;
-    int polygonsOnCircle[] = {18, 36, 54, 72, 124, 172, 212, 256, 312, 512};
+    int polygonsOnCircle[] = {18, 36, 54, 72, 124, 172, 212, 256, 312, 312};
 
     public PerformanceFragment() {
         // Required empty public constructor

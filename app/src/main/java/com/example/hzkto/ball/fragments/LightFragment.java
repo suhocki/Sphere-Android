@@ -29,7 +29,7 @@ import static com.example.hzkto.ball.R.id.container;
  * Created by hzkto on 11/25/2016.
  */
 
-public class LightFragment extends Fragment {
+public class LightFragment extends MyFragment {
     Button btnOk, btnClose, btnColor;
     TextView tvX, tvY, tvZ, tvStandart;
     View focusView;

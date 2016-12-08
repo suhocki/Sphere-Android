@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,14 +29,13 @@ import com.example.hzkto.ball.fragments.SphereFragment;
 import static com.example.hzkto.ball.R.id.nav_light;
 import static com.example.hzkto.ball.R.id.nav_move;
 import static com.example.hzkto.ball.R.id.nav_performance;
-import static com.example.hzkto.ball.R.id.nav_projection;
 import static com.example.hzkto.ball.R.id.nav_rotate;
 import static com.example.hzkto.ball.R.id.nav_scale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    public static Toolbar toolbar;
+    Toolbar toolbar;
     SphereFragment sphereFragment;
-    DrawerLayout drawer;
+    DrawerLayout drawerLayout;
     NavigationView navigationView;
     Context context = this;
 
@@ -43,19 +43,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
-        setSupportActionBar(toolbar);
         initViews();
         initEtc();
+        setSupportActionBar(toolbar);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, new SphereFragment())
                 .commit();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initEtc() {
         sphereFragment = new SphereFragment();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerStateChanged(int newState) {
                 super.onDrawerStateChanged(newState);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }).start();
             }
         };
-        drawer.addDrawerListener(toggle);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         getFragmentManager().addOnBackStackChangedListener(new android.app.FragmentManager.OnBackStackChangedListener() {
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
     }
 
@@ -105,21 +105,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case nav_rotate:
                 showFragment(new RotateFragment());
                 return true;
-            case nav_projection:
-                showFragment(new Projection1Fragment());
-                return true;
             default:
                 return false;
         }
     }
 
     private void showFragment(Fragment fragment) {
+//        if (getFragmentManager().getBackStackEntryCount() > 1) {
+//        }
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, fragment)
                 .addToBackStack(null)
                 .commit();
-        drawer.closeDrawers();
+        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -130,11 +129,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == nav_move) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                changeDrawerState();
+                return true;
+            case R.id.action_projections:
+                showFragment(new Projection1Fragment());
+                return true;
+            case R.id.action_reset:
+                showFragment(new SphereFragment());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    private void changeDrawerState() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+        }
+        else {
+            drawerLayout.openDrawer(Gravity.LEFT);
+        }
     }
 
     public static void closeKeyboard(Context context) {
@@ -150,15 +166,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             toolbar.setTitle(R.string.sphere);
         }
-        if (this.drawer.isDrawerOpen(GravityCompat.START)) {
-            this.drawer.closeDrawer(GravityCompat.START);
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
 
-    public static void setToolbarTitle(Activity activity, int light) {
+    public static void setToolbarTitle(Activity activity, int title) {
         Toolbar toolbarTitle = (Toolbar) activity.findViewById(R.id.toolbar);
-        toolbarTitle.setTitle(activity.getResources().getString(light));
+        toolbarTitle.setTitle(activity.getResources().getString(title));
     }
 }

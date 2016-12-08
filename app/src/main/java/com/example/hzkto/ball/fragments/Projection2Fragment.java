@@ -16,7 +16,7 @@ import static com.example.hzkto.ball.R.id.container;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Projection2Fragment extends Fragment {
+public class Projection2Fragment extends MyFragment {
     Button btnPrev, btnClose;
 
     public Projection2Fragment() {
@@ -48,8 +48,8 @@ public class Projection2Fragment extends Fragment {
                 getFragmentManager()
                         .beginTransaction()
                         .replace(container, new SphereFragment())
+                        .addToBackStack(null)
                         .commit();
-                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         btnPrev.setOnClickListener(new View.OnClickListener() {
@@ -58,8 +58,8 @@ public class Projection2Fragment extends Fragment {
                 getFragmentManager()
                         .beginTransaction()
                         .replace(container, new Projection1Fragment())
+                        .addToBackStack(null)
                         .commit();
-                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }

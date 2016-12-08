@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
 import com.example.hzkto.ball.R;
+import com.example.hzkto.ball.system.MySurfaceView;
 
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
@@ -19,8 +20,9 @@ import static com.example.hzkto.ball.R.id.container;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Projection1Fragment extends Fragment {
+public class Projection1Fragment extends MyFragment {
     Button btnNext, btnClose;
+    MySurfaceView svFrontal, svHorizontal;
 
     public Projection1Fragment() {
         // Required empty public constructor
@@ -33,6 +35,18 @@ public class Projection1Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.f_projections_1, container, false);
         setToolbarTitle(getActivity(), R.string.projections);
+
+        Bundle args = new Bundle();
+        args.putDouble("scaleX", Double.valueOf(0.5));
+        args.putDouble("scaleY", Double.valueOf(1));
+        args.putDouble("scaleZ", Double.valueOf(1));
+
+        svFrontal = (MySurfaceView) view.findViewById(R.id.f_projections_1_svFrontal);
+        svFrontal.setBundle(args);
+
+        svHorizontal = (MySurfaceView) view.findViewById(R.id.f_projections_1_svHorizontal);
+
+
         initViews(view);
         setListeners();
         return view;
@@ -51,8 +65,8 @@ public class Projection1Fragment extends Fragment {
                 getFragmentManager()
                         .beginTransaction()
                         .replace(container, new SphereFragment())
+                        .addToBackStack(null)
                         .commit();
-                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +75,8 @@ public class Projection1Fragment extends Fragment {
                 getFragmentManager()
                         .beginTransaction()
                         .replace(container, new Projection2Fragment())
+                        .addToBackStack(null)
                         .commit();
-                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }
