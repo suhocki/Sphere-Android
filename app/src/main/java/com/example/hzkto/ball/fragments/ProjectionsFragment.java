@@ -54,7 +54,7 @@ public class ProjectionsFragment extends MyFragment {
                     Toast.makeText(getContext(), "Заполните поля", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("label", PROJECTION_PERSPECTIVE);
                 bundle.putDouble("fi", Double.valueOf(tvPerspectFi.getText().toString()));
                 bundle.putDouble("psi", Double.valueOf(tvPerspectPsi.getText().toString()));
@@ -70,7 +70,7 @@ public class ProjectionsFragment extends MyFragment {
                     Toast.makeText(getContext(), "Заполните поля", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("label", PROJECTION_OBLIQUE);
                 bundle.putDouble("alpha", Double.valueOf(tvObliqueAlpha.getText().toString()));
                 bundle.putDouble("l", Double.valueOf(tvObliqueL.getText().toString()));
@@ -80,11 +80,11 @@ public class ProjectionsFragment extends MyFragment {
         btnAxon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tvAxonFi.getText().toString().isEmpty() || tvObliqueL.getText().toString().isEmpty()) {
+                if (tvAxonFi.getText().toString().isEmpty() || tvAxonPsi.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Заполните поля", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("label", PROJECTION_AXONOMETRIC);
                 bundle.putDouble("fi", Double.valueOf(tvAxonFi.getText().toString()));
                 bundle.putDouble("psi", Double.valueOf(tvAxonPsi.getText().toString()));
@@ -94,7 +94,7 @@ public class ProjectionsFragment extends MyFragment {
         btnFrontal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("label", PROJECTION_FRONT);
                 showFragment();
             }
@@ -102,7 +102,7 @@ public class ProjectionsFragment extends MyFragment {
         btnHoriz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("label", PROJECTION_HORIZONTAL);
                 showFragment();
             }
@@ -110,7 +110,7 @@ public class ProjectionsFragment extends MyFragment {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("label", PROJECTION_PROFILE);
                 showFragment();
             }
