@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.hzkto.ball.R;
 
+import static com.example.hzkto.ball.Constants.SETTINGS_LIGHT;
+import static com.example.hzkto.ball.Constants.SETTINGS_SCALE;
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
@@ -80,6 +82,7 @@ public class ScaleFragment extends MyFragment {
                     }
                     closeKeyboard(getContext());
                     Bundle args = new Bundle();
+                    args.putInt("label", SETTINGS_SCALE);
                     args.putDouble("scaleX", Double.valueOf(tvX.getText().toString()));
                     args.putDouble("scaleY", Double.valueOf(tvY.getText().toString()));
                     args.putDouble("scaleZ", Double.valueOf(tvZ.getText().toString()));

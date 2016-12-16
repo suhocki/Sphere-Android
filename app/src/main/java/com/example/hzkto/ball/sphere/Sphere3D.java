@@ -10,8 +10,24 @@ import java.util.List;
 import static com.example.hzkto.ball.Constants.TYPE_X;
 import static com.example.hzkto.ball.Constants.TYPE_Y;
 import static com.example.hzkto.ball.Constants.TYPE_Z;
-import static com.example.hzkto.ball.R.string.rotate;
+import static com.example.hzkto.ball.system.DrawThread.axonometricFi;
+import static com.example.hzkto.ball.system.DrawThread.axonometricPsi;
+import static com.example.hzkto.ball.system.DrawThread.invisLines;
+import static com.example.hzkto.ball.system.DrawThread.obliqueAlpha;
+import static com.example.hzkto.ball.system.DrawThread.obliqueL;
+import static com.example.hzkto.ball.system.DrawThread.perspectiveD;
+import static com.example.hzkto.ball.system.DrawThread.perspectiveFi;
+import static com.example.hzkto.ball.system.DrawThread.perspectivePsi;
+import static com.example.hzkto.ball.system.DrawThread.perspectiveQ;
+import static com.example.hzkto.ball.system.DrawThread.projectionAxonometric;
+import static com.example.hzkto.ball.system.DrawThread.projectionOblique;
+import static com.example.hzkto.ball.system.DrawThread.projectionPerspective;
+import static com.example.hzkto.ball.system.DrawThread.reflect;
+import static com.example.hzkto.ball.tools.MathTools.MultiplyMatrices;
 import static com.example.hzkto.ball.tools.MathTools.rotatePoints;
+import static com.example.hzkto.ball.tools.Matrix.getAxonometric;
+import static com.example.hzkto.ball.tools.Matrix.getOblique;
+import static com.example.hzkto.ball.tools.Matrix.getPerspective;
 
 /**
  * Created by hzkto on 10/30/2016.
@@ -25,7 +41,7 @@ public class Sphere3D {
     double radius;
     int polygons;
     int color[];
-    boolean reflect, invisLines;
+//    boolean reflect, invisLines;
     boolean scale = true;
     double scaleX, scaleY, scaleZ;
     double angleX, angleY, angleZ;
@@ -33,10 +49,10 @@ public class Sphere3D {
 
     public Sphere3D(Point3D center, double radius, double angleX,
                     double angleY, double angleZ, Point3D lightPoint,
-                    int polygons, boolean reflect, boolean invisLines, int color[]) {
+                    int polygons, int color[]) {
         this.center = center;
-        this.reflect = reflect;
-        this.invisLines = invisLines;
+//        this.reflect = reflect;
+//        this.invisLines = invisLines;
         this.polygons = polygons;
         this.color = color;
         this.circles = new ArrayList<>();
@@ -63,9 +79,8 @@ public class Sphere3D {
 
     public void draw(Canvas canvas) {
         fillCircles();
-        if (needScale) {
-            changeScale(circles);
-        }
+        changeProjections();
+        changeScale(circles);
         rotateCircles(circles);
         fillPolygons();
         Paint paint = getPaint();
@@ -73,7 +88,6 @@ public class Sphere3D {
             if (invisLines) {
                 if (polygon.isVisible) {
                     if (reflect) {
-//                        final double lightCoefficient = polygon.getLightCoefficient(lightPoint, center, radius);
                         paint.setColor(Color.rgb(
                                 (int) (color[0] * polygon.lightCoefficient),
                                 (int) (color[1] * polygon.lightCoefficient),
@@ -90,18 +104,53 @@ public class Sphere3D {
         }
     }
 
+    private void changeProjections() {
+        if (projectionOblique) {
+            for (Circle3D circle : circles) {
+                for (Point3D point : circle.points) {
+                    Point3D newPoint = MultiplyMatrices(point, getOblique(obliqueL, obliqueAlpha));
+                    point.x = newPoint.x;
+                    point.y = newPoint.y;
+                    point.z = newPoint.z;
+                }
+            }
+        }
+        if (projectionAxonometric) {
+            for (Circle3D circle : circles) {
+                for (Point3D point : circle.points) {
+                    Point3D newPoint = MultiplyMatrices(point, getAxonometric(axonometricFi, axonometricPsi));
+                    point.x = newPoint.x;
+                    point.y = newPoint.y;
+                    point.z = newPoint.z;
+                }
+            }
+        }
+        if (projectionPerspective) {
+            for (Circle3D circle : circles) {
+                for (Point3D point : circle.points) {
+                    Point3D newPoint = getPerspective(point, perspectiveD, perspectiveQ, perspectiveFi, perspectivePsi);
+                    point.x = newPoint.x;
+                    point.y = newPoint.y;
+                    point.z = newPoint.z;
+                }
+            }
+        }
+    }
+
     private void changeScale(List<Circle3D> circles) {
-        for (Circle3D circle : circles) {
-            for (Point3D point3D : circle.points) {
-                point3D.x -= center.x;
-                point3D.y -= center.y;
-                point3D.z -= center.z;
-                point3D.x *= scaleX;
-                point3D.y *= scaleY;
-                point3D.z *= scaleZ;
-                point3D.x += center.x;
-                point3D.y += center.y;
-                point3D.z += center.z;
+        if (needScale) {
+            for (Circle3D circle : circles) {
+                for (Point3D point3D : circle.points) {
+                    point3D.x -= center.x;
+                    point3D.y -= center.y;
+                    point3D.z -= center.z;
+                    point3D.x *= scaleX;
+                    point3D.y *= scaleY;
+                    point3D.z *= scaleZ;
+                    point3D.x += center.x;
+                    point3D.y += center.y;
+                    point3D.z += center.z;
+                }
             }
         }
     }

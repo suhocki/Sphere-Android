@@ -88,50 +88,23 @@ public class MathTools {
         return new Point3D(xSum / points.size(), ySum / points.size(), zSum / points.size());
     }
 
-    public static boolean isLightened(Point3D camPoint, Point3D polygonCenter, double maxLigthDistance) {
-        double distanceFromCamPoint = MathTools.getDistBetwTwoPoints3D(camPoint, polygonCenter);
-        if (distanceFromCamPoint <= maxLigthDistance) {
-            return true;
-        }
-        return false;
-    }
-
-    public static double getLightCoeff(List<Point3D> points, Point3D camPoint, Point3D polygonCenter) {
-        double X1 = points.get(0).x;
-        double X2 = points.get(1).x;
-        double X3 = points.get(2).x;
-        double Y1 = points.get(0).y;
-        double Y2 = points.get(1).y;
-        double Y3 = points.get(2).y;
-        double Z1 = points.get(0).z;
-        double Z2 = points.get(1).z;
-        double Z3 = points.get(2).z;
-        double A = Y1 * (Z2 - Z3) + Y2 * (Z3 - Z1) + Y3 * (Z1 - Z2);
-        double B = Z1 * (X2 - X3) + Z2 * (X3 - X1) + Z3 * (X1 - X2);
-        double C = X1 * (Y2 - Y3) + X2 * (Y3 - Y1) + X3 * (Y1 - Y2);
-        double x1 = polygonCenter.x;
-        double x2 = camPoint.x;
-        double y1 = polygonCenter.y;
-        double y2 = camPoint.y;
-        double z1 = polygonCenter.z;
-        double z2 = camPoint.z;
-        return abs((A * (x2 - x1) + B * (y2 - y1) + C * (z2 - z1)) /
-                Math.sqrt(A * A + B * B + C * C) /
-                Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)));
-    }
-
-    public static double getMaxLightDist(Point3D center, Point3D lightPoint, double radius) {
-        double distBetwCamAndCenter = MathTools.getDistBetwTwoPoints3D(center, lightPoint);
-        return Math.sqrt(distBetwCamAndCenter * distBetwCamAndCenter - radius * radius);
-    }
-
     public static double getDotProduct(Vector v1, Vector v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     public static Vector getCrossProduct(Vector v1, Vector v2) {
-        return new Vector(v1.y * v2.z - v1.z * v2.y,
+        return new Vector(
+                v1.y * v2.z - v1.z * v2.y,
                 v1.z * v2.x - v1.x * v2.z,
-                v1.x * v2.y - v1.y * v2.x);
+                v1.x * v2.y - v1.y * v2.x
+        );
+    }
+
+    public static Point3D MultiplyMatrices(Point3D p, double m[][]) {
+        return new Point3D(
+                p.x * m[0][0] + p.y * m[1][0] + p.z * m[2][0] + m[3][0],
+                p.x * m[0][1] + p.y * m[1][1] + p.z * m[2][1] + m[3][1],
+                p.x * m[0][2] + p.y * m[1][2] + p.z * m[2][2] + m[3][2]
+        );
     }
 }

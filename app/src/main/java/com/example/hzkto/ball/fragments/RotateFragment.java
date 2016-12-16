@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.hzkto.ball.R;
 
+import static com.example.hzkto.ball.Constants.SETTINGS_LIGHT;
+import static com.example.hzkto.ball.Constants.SETTINGS_ROTATE;
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
@@ -80,6 +82,7 @@ public class RotateFragment extends MyFragment {
                     }
                     closeKeyboard(getContext());
                     Bundle args = new Bundle();
+                    args.putInt("label", SETTINGS_ROTATE);
                     args.putDouble("rotateX", Double.valueOf(tvX.getText().toString()));
                     args.putDouble("rotateY", Double.valueOf(tvY.getText().toString()));
                     args.putDouble("rotateZ", Double.valueOf(tvZ.getText().toString()));

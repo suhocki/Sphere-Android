@@ -16,13 +16,13 @@ public class SystemTools {
     }
 
     public static double getStandartRadius(Point3D center) {
-        return StrictMath.min(center.x, center.y);
+        return StrictMath.min(center.x, center.y) * 0.8;
     }
 
     public static Point3D getStandartLightPoint(Point3D center) {
-        return new Point3D(center.x,
-                25000,
-                center.z);
+        return new Point3D(center.x+2000,
+                center.y+0,
+                center.z + 500);
 
     }
 }

@@ -21,6 +21,7 @@ import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
 
 import static android.graphics.Color.YELLOW;
+import static com.example.hzkto.ball.Constants.SETTINGS_LIGHT;
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
@@ -101,6 +102,7 @@ public class LightFragment extends MyFragment {
                 }
                 closeKeyboard(getContext());
                 Bundle args = new Bundle();
+                args.putInt("label", SETTINGS_LIGHT);
                 args.putDouble("lightX", Double.valueOf(tvX.getText().toString()));
                 args.putDouble("lightY", Double.valueOf(tvY.getText().toString()));
                 args.putDouble("lightZ", Double.valueOf(tvZ.getText().toString()));

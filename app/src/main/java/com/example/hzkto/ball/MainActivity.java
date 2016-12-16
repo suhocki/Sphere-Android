@@ -21,11 +21,12 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.hzkto.ball.fragments.LightFragment;
 import com.example.hzkto.ball.fragments.MoveFragment;
 import com.example.hzkto.ball.fragments.PerformanceFragment;
-import com.example.hzkto.ball.fragments.Projection1Fragment;
+import com.example.hzkto.ball.fragments.ProjectionsFragment;
 import com.example.hzkto.ball.fragments.RotateFragment;
 import com.example.hzkto.ball.fragments.ScaleFragment;
 import com.example.hzkto.ball.fragments.SphereFragment;
 
+import static com.example.hzkto.ball.Constants.SETTINGS_RESET;
 import static com.example.hzkto.ball.R.id.nav_light;
 import static com.example.hzkto.ball.R.id.nav_move;
 import static com.example.hzkto.ball.R.id.nav_performance;
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initEtc() {
-        sphereFragment = new SphereFragment();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
@@ -111,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showFragment(Fragment fragment) {
-//        if (getFragmentManager().getBackStackEntryCount() > 1) {
-//        }
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, fragment)
@@ -134,10 +132,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 changeDrawerState();
                 return true;
             case R.id.action_projections:
-                showFragment(new Projection1Fragment());
+                showFragment(new ProjectionsFragment());
                 return true;
             case R.id.action_reset:
-                showFragment(new SphereFragment());
+                Bundle bundle = new Bundle();
+                bundle.putInt("label", SETTINGS_RESET);
+                SphereFragment sphereFragment = new SphereFragment();
+                sphereFragment.setArguments(bundle);
+                showFragment(sphereFragment);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

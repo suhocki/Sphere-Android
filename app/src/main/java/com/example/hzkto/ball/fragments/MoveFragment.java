@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.hzkto.ball.R;
 import com.example.hzkto.ball.system.DrawThread;
 
+import static com.example.hzkto.ball.Constants.SETTINGS_LIGHT;
+import static com.example.hzkto.ball.Constants.SETTINGS_MOVE;
 import static com.example.hzkto.ball.MainActivity.closeKeyboard;
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
@@ -101,6 +103,7 @@ public class MoveFragment extends MyFragment {
                     }
                     closeKeyboard(getContext());
                     Bundle args = new Bundle();
+                    args.putInt("label", SETTINGS_MOVE);
                     args.putDouble("centerX", Double.valueOf(tvX.getText().toString()));
                     args.putDouble("centerY", Double.valueOf(tvY.getText().toString()));
                     args.putDouble("centerZ", Double.valueOf(tvZ.getText().toString()));

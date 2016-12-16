@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.hzkto.ball.R;
 
+import static com.example.hzkto.ball.Constants.SETTINGS_LIGHT;
+import static com.example.hzkto.ball.Constants.SETTINGS_PERFOMANCE;
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
 
@@ -116,6 +118,7 @@ public class PerformanceFragment extends MyFragment {
             public void onClick(View v) {
                 {
                     Bundle args = new Bundle();
+                    args.putInt("label", SETTINGS_PERFOMANCE);
                     args.putInt("polygonsCount", polygonsOnCircle[seekBar.getProgress()]);
                     args.putBoolean("reflect", swReflect.isChecked());
                     args.putBoolean("invisLines", swDelLines.isChecked());

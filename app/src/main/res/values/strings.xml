@@ -13,4 +13,6 @@
     <string name="light">Освещение</string>
     <string name="performance">Производительность</string>
     <string name="projections">Проекции</string>
+    <string name="front">Front side</string>
+    <string name="back">Back side</string>
 </resources>

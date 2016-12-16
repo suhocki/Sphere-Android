@@ -46,10 +46,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="162"
-                    android:textAlignment="textEnd"
                     android:textAllCaps="false"
                     android:textSize="14sp"
-                    android:textStyle="normal|bold" />
+                    android:textStyle="normal|bold"
+                    android:textAlignment="viewEnd" />
             </LinearLayout>
 
             <SeekBar

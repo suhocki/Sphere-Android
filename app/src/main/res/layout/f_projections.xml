@@ -1,0 +1,76 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.hzkto.ball.fragments.ProjectionsFragment"
+    android:background="@android:color/background_light"
+    android:gravity="center_vertical"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+
+        android:orientation="vertical">
+
+        <Button
+            android:text="Фронтальная"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/f_projections_frontal"
+            android:layout_marginBottom="@dimen/button_padding_vertical_material"
+            android:layout_marginTop="@dimen/button_padding_vertical_material" />
+
+        <Button
+            android:text="Горизонтальная"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/f_projections_horizontal"
+            android:layout_marginTop="@dimen/button_padding_vertical_material"
+            android:layout_marginBottom="@dimen/button_padding_vertical_material" />
+
+        <Button
+            android:text="Профильная"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/f_projections_profile"
+            android:layout_marginTop="@dimen/button_padding_vertical_material"
+            android:layout_marginBottom="@dimen/button_padding_vertical_material" />
+
+        <com.example.hzkto.ball.tools.view.FlipLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content">
+            <include layout="@layout/proj_axonometric_front" />
+            <include layout="@layout/proj_axonometric_back"/>
+        </com.example.hzkto.ball.tools.view.FlipLayout>
+
+        <com.example.hzkto.ball.tools.view.FlipLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content">
+            <include layout="@layout/proj_oblique_front" />
+            <include layout="@layout/proj_oblique_back"/>
+        </com.example.hzkto.ball.tools.view.FlipLayout>
+
+        <com.example.hzkto.ball.tools.view.FlipLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content">
+            <include layout="@layout/proj_perspective_front"
+                android:id="@+id/btnPersp" />
+            <include layout="@layout/proj_perspective_back"/>
+        </com.example.hzkto.ball.tools.view.FlipLayout>
+    </LinearLayout>
+
+
+
+
+
+</ScrollView>
