@@ -1,0 +1,6 @@
+keystore pass:
+HtVRdIa9
+allias:
+HtVRdIa9
+password:
+HtVRdIa9
