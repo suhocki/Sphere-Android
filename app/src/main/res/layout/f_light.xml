@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Координата X источника света"
                     android:imeOptions="actionNext"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Координата Y источника света"
                     android:imeOptions="actionNext"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Координата Z источника света"
                     android:imeOptions="actionNext"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 

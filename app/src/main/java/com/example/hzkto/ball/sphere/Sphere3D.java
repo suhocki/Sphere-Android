@@ -128,10 +128,14 @@ public class Sphere3D {
         if (projectionPerspective) {
             for (Circle3D circle : circles) {
                 for (Point3D point : circle.points) {
+                    point.y -= center.y;
+                    point.x -= center.x;
                     Point3D newPoint = getPerspective(point, perspectiveD, perspectiveQ, perspectiveFi, perspectivePsi);
                     point.x = newPoint.x;
                     point.y = newPoint.y;
                     point.z = newPoint.z;
+                    point.y += center.y;
+                    point.x += center.x;
                 }
             }
         }

@@ -33,6 +33,7 @@ import static com.example.hzkto.ball.Constants.SETTINGS_RESET;
 import static com.example.hzkto.ball.Constants.SETTINGS_ROTATE;
 import static com.example.hzkto.ball.Constants.SETTINGS_SCALE;
 import static com.example.hzkto.ball.tools.SystemTools.getStandartLightPoint;
+import static com.example.hzkto.ball.tools.SystemTools.getStandartLightPointPr;
 import static com.example.hzkto.ball.tools.SystemTools.getStandartRadius;
 import static com.example.hzkto.ball.tools.SystemTools.getViewCenter;
 import static java.lang.Math.toRadians;
@@ -140,6 +141,8 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                 angleX = toRadians(0);
                 angleY = toRadians(0);
                 angleZ = toRadians(90);
+                lightPoint = getStandartLightPoint(center);
+
                 break;
             case PROJECTION_HORIZONTAL:
                 angleX = toRadians(0);
@@ -150,13 +153,14 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                 angleX = toRadians(0);
                 angleY = toRadians(0);
                 angleZ = toRadians(90);
+                lightPoint = getStandartLightPointPr(center);
                 break;
             case PROJECTION_OBLIQUE:
                 projectionOblique = true;
                 obliqueAlpha = bundle.getDouble("alpha");
                 obliqueL = bundle.getDouble("l");
-                reflect = false;
-                invisLines = false;
+//                reflect = false;
+//                invisLines = false;
                 break;
             case PROJECTION_PERSPECTIVE:
                 projectionPerspective = true;
@@ -164,15 +168,15 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                 perspectiveFi = bundle.getDouble("fi");
                 perspectivePsi = bundle.getDouble("psi");
                 perspectiveQ = bundle.getDouble("q");
-                reflect = false;
-                invisLines = false;
+//                reflect = false;
+//                invisLines = false;
                 break;
             case PROJECTION_AXONOMETRIC:
                 projectionAxonometric = true;
                 axonometricFi = bundle.getDouble("fi");
                 axonometricPsi = bundle.getDouble("psi");
-                reflect = false;
-                invisLines = false;
+//                reflect = false;
+//                invisLines = false;
                 break;
         }
 
@@ -379,28 +383,48 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
 
             case MotionEvent.ACTION_MOVE: // движение
                 if (event.getPointerCount() == 1) {
-                    firstPointAfter = new Point();
-                    firstPointAfter.x = (int) event.getX(0);
-                    firstPointAfter.y = (int) event.getY(0);
-                    double deltaX = firstPointAfter.x - firstPointBefore.x;
-                    final double deltaY = firstPointAfter.y - firstPointBefore.y;
-                    int deltaMax = 500;
-                    int deltaMin = -500;
-                    if (!(deltaX > deltaMax || deltaY > deltaMax) &&
-                            (!(deltaX < deltaMin || deltaY < deltaMin))) {
-                        angleX -= toRadians(deltaX / 15);
-                        angleY += toRadians(deltaY / 15);
-                        if (angleY > toRadians(90)) {
-                            angleY = toRadians(90);
+                    if (!projectionPerspective && !projectionFrontal &&
+                            !projectionProfile && !projectionAxonometric &&
+                            !projectionHorizontal && !projectionOblique) {
+                        firstPointAfter = new Point();
+                        firstPointAfter.x = (int) event.getX(0);
+                        firstPointAfter.y = (int) event.getY(0);
+                        double deltaX = firstPointAfter.x - firstPointBefore.x;
+                        final double deltaY = firstPointAfter.y - firstPointBefore.y;
+                        int deltaMax = 500;
+                        int deltaMin = -500;
+                        if (!(deltaX > deltaMax || deltaY > deltaMax) &&
+                                (!(deltaX < deltaMin || deltaY < deltaMin))) {
+                            angleX -= toRadians(deltaX / 15);
+                            angleY += toRadians(deltaY / 15);
+                            if (angleY > toRadians(90)) {
+                                angleY = toRadians(90);
+                            }
+                            if (angleY < toRadians(-90)) {
+                                angleY = toRadians(-90);
+                            }
                         }
-                        if (angleY < toRadians(-90)) {
-                            angleY = toRadians(-90);
-                        }
+                        firstPointBefore.x = (int) event.getX(0);
+                        firstPointBefore.y = (int) event.getY(0);
                     }
-                    firstPointBefore.x = (int) event.getX(0);
-                    firstPointBefore.y = (int) event.getY(0);
                 }
                 if (event.getPointerCount() == 2) {
+                    if (projectionPerspective) {
+                        firstPointAfter = new Point();
+                        secondPointAfter = new Point();
+                        firstPointAfter.x = (int) event.getX(0);
+                        firstPointAfter.y = (int) event.getY(0);
+                        secondPointAfter.x = (int) event.getX(1);
+                        secondPointAfter.y = (int) event.getY(1);
+                        double distBetwPointsAfter = MathTools.getDistBetwTwoPoints2D(firstPointAfter, secondPointAfter);
+                        double distBetwPointsBefore = MathTools.getDistBetwTwoPoints2D(firstPointBefore, secondPointBefore);
+                        firstPointBefore.x = (int) event.getX(0);
+                        firstPointBefore.y = (int) event.getY(0);
+                        secondPointBefore.x = (int) event.getX(1);
+                        secondPointBefore.y = (int) event.getY(1);
+                        this.perspectiveD += (distBetwPointsAfter - distBetwPointsBefore) / 2;
+                    } else {
+
                     firstPointAfter = new Point();
                     secondPointAfter = new Point();
                     firstPointAfter.x = (int) event.getX(0);
@@ -414,6 +438,7 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
                     secondPointBefore.x = (int) event.getX(1);
                     secondPointBefore.y = (int) event.getY(1);
                     this.radius += (distBetwPointsAfter - distBetwPointsBefore) / 2;
+                    }
                 }
                 break;
         }

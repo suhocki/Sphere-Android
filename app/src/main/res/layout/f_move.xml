@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Координата X центра сферы"
                     android:imeOptions="actionNext"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Координата Y центра сферы"
                     android:imeOptions="actionNext"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Координата Z центра сферы"
                     android:imeOptions="actionNext"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
@@ -87,7 +87,7 @@
                     android:hint="Радиус сферы"
                     android:imeActionLabel="@string/ok"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 

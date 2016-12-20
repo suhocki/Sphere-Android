@@ -6,82 +6,90 @@
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/proj_perspective_back_tvD"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="match_parent"
+        android:background="@drawable/btn">
 
-        <AutoCompleteTextView
-
-            android:id="@+id/proj_perspective_back_d"
-            android:text="1400"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/proj_perspective_back_tvD"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Расстояние d"
-            android:imeOptions="actionNext"
-            android:inputType="numberSigned"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/proj_perspective_back_tvQ"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+            <AutoCompleteTextView
 
-        <AutoCompleteTextView
+                android:id="@+id/proj_perspective_back_d"
+                android:text="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Коэффициент d"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
 
-            android:id="@+id/proj_perspective_back_q"
-            android:text="10"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/proj_perspective_back_tvQ"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Коэффициент q"
-            android:imeOptions="actionNext"
-            android:inputType="numberSigned"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/proj_perspective_back_tvPhi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+            <AutoCompleteTextView
 
-        <AutoCompleteTextView
+                android:id="@+id/proj_perspective_back_q"
+                android:text="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Коэффициент ρ"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
 
-            android:id="@+id/proj_perspective_back_phi"
-            android:text="200"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/proj_perspective_back_tvPhi"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Угол Φ"
-            android:imeOptions="actionNext"
-            android:inputType="numberSigned"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/proj_perspective_back_tvPsi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+            <AutoCompleteTextView
 
-        <AutoCompleteTextView
+                android:id="@+id/proj_perspective_back_phi"
+                android:text="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Угол Φ"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
 
-            android:id="@+id/proj_perspective_back_psi"
-            android:text="35"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/proj_perspective_back_tvPsi"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Угол Ψ"
-            android:imeOptions="actionNext"
-            android:inputType="numberSigned"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
+
+            <AutoCompleteTextView
+
+                android:id="@+id/proj_perspective_back_psi"
+                android:text="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Угол Ψ"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <ImageView
             android:layout_width="wrap_content"
