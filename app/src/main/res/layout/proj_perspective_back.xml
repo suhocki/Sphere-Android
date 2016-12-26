@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Коэффициент d"
                 android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Коэффициент ρ"
                 android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Угол Φ"
                 android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Угол Ψ"
                 android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>

@@ -21,6 +21,10 @@ import static com.example.hzkto.ball.Constants.PROJECTION_PROFILE;
 import static com.example.hzkto.ball.Constants.SETTINGS_PERFOMANCE;
 import static com.example.hzkto.ball.MainActivity.setToolbarTitle;
 import static com.example.hzkto.ball.R.id.container;
+import static com.example.hzkto.ball.system.DrawThread.perspectiveD;
+import static com.example.hzkto.ball.system.DrawThread.perspectiveFi;
+import static com.example.hzkto.ball.system.DrawThread.perspectivePsi;
+import static com.example.hzkto.ball.system.DrawThread.perspectiveQ;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -142,6 +146,10 @@ public class ProjectionsFragment extends MyFragment {
         tvPerspectFi = (TextView) view.findViewById(R.id.proj_perspective_back_phi);
         tvPerspectPsi = (TextView) view.findViewById(R.id.proj_perspective_back_psi);
         tvPerspectQ = (TextView) view.findViewById(R.id.proj_perspective_back_q);
+        tvPerspectD.setText(String.valueOf(perspectiveD));
+        tvPerspectQ.setText(String.valueOf(perspectiveQ));
+        tvPerspectFi.setText(String.valueOf(perspectiveFi));
+        tvPerspectPsi.setText(String.valueOf(perspectivePsi));
     }
 
 

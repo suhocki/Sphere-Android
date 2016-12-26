@@ -28,8 +28,8 @@ public class SystemTools {
 
     public static Point3D getStandartLightPointPr(Point3D center) {
         return new Point3D(center.x+0,
-                center.y+2000,
-                center.z + 500);
+                center.y+0,
+                center.z + 5000);
 
     }
 }

@@ -105,7 +105,7 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
         projectionFrontal = false;
         projectionHorizontal = false;
         projectionProfile = false;
-
+        lightPoint = getStandartLightPoint(center);
         switch (bundle.getInt("label")) {
             case SETTINGS_RESET:
                 setStandartParams(surfaceView);
@@ -383,6 +383,28 @@ public class DrawThread extends Thread implements View.OnTouchListener, View.OnC
 
             case MotionEvent.ACTION_MOVE: // движение
                 if (event.getPointerCount() == 1) {
+                    if (projectionPerspective) {
+                        firstPointAfter = new Point();
+                        firstPointAfter.x = (int) event.getX(0);
+                        firstPointAfter.y = (int) event.getY(0);
+                        double deltaX = firstPointAfter.x - firstPointBefore.x;
+                        final double deltaY = firstPointAfter.y - firstPointBefore.y;
+                        int deltaMax = 500;
+                        int deltaMin = -500;
+                        if (!(deltaX > deltaMax || deltaY > deltaMax) &&
+                                (!(deltaX < deltaMin || deltaY < deltaMin))) {
+                            perspectiveFi += toRadians(deltaX * 3);
+                            perspectivePsi -= toRadians(deltaY * 3);
+                            if (angleY > toRadians(90)) {
+                                angleY = toRadians(90);
+                            }
+                            if (angleY < toRadians(-90)) {
+                                angleY = toRadians(-90);
+                            }
+                        }
+                        firstPointBefore.x = (int) event.getX(0);
+                        firstPointBefore.y = (int) event.getY(0);
+                    }
                     if (!projectionPerspective && !projectionFrontal &&
                             !projectionProfile && !projectionAxonometric &&
                             !projectionHorizontal && !projectionOblique) {
